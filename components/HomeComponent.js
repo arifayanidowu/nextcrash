@@ -5,9 +5,6 @@ import { List, ListItem, ListItemText, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    marginTop: theme.spacing(8)
-  },
   list: {
     backgroundColor: theme.palette.background.paper
   }
@@ -31,7 +28,7 @@ export default function HomeComponent() {
   }
 
   return (
-    <div className={classes.root}>
+    <div>
       <Container>
         <List className={classes.list}>
           {data.users.map(user => (

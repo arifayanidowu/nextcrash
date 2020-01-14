@@ -1,254 +1,259 @@
 import React from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import Brightness7Icon from "@material-ui/icons/Brightness7";
+import { Button, Avatar } from "@material-ui/core";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
-import { useTheme } from "@material-ui/styles";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
+import { useRouter } from "next/router";
+import Tooltip from "@material-ui/core/Tooltip";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import Collapse from "@material-ui/core/Collapse";
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
-  grow: {
-    flexGrow: 1
+  root: {
+    display: "flex"
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: 36
   },
-  title: {
-    display: "none",
+  hide: {
+    display: "none"
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap"
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    backgroundColor: "#1b2430",
+    color: "#fff",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  drawerClose: {
+    backgroundColor: "#1b2430",
+    color: "#fff",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    overflowX: "hidden",
+    width: theme.spacing(7) + 1,
     [theme.breakpoints.up("sm")]: {
-      display: "block"
+      width: theme.spacing(9) + 1
     }
   },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.25),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.35)
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto"
-    }
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
+  toolbar: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar
   },
-  inputRoot: {
-    color: "inherit"
-    // backgroundColor: theme.palette.background.default
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: 200
-    }
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
-  },
-  sectionMobile: {
+  toolbar2: {
     display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    color:
+      theme.palette.type === "dark"
+        ? theme.palette.background.paper
+        : theme.palette.background.paper,
+    backgroundColor: theme.palette.secondary.navHead,
+    ...theme.mixins.toolbar
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3)
+  },
+  title: {
+    flexGrow: 1
+  },
+  nested: {
+    paddingLeft: theme.spacing(4)
+  },
+  icon: {
+    color: "#fff"
   }
 }));
 
-export default function Navbar({ toggleDarkMode }) {
+export default function Navbar({ children, toggleDarkMode }) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+  const [collapse, setCollapse] = React.useState(false);
+  const router = useRouter();
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
+  const handleCollapse = () => {
+    setCollapse(!collapse);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
-
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={toggleDarkMode}>
-        <IconButton color="inherit">
-          {theme.palette.type === "light" ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
-          )}
-        </IconButton>
-        <p>Toggle light/dark mode</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
 
   return (
-    <div className={classes.grow}>
-      <AppBar position="fixed" color="default">
+    <div className={classes.root}>
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open
+        })}
+        color="default"
+      >
         <Toolbar>
           <IconButton
-            edge="start"
-            className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open
+            })}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Nextcrash
+          <Typography variant="h6" noWrap className={classes.title}>
+            <Button color="default" onClick={() => router.push("/")}>
+              RSedge
+            </Button>
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
+          <Button onClick={() => router.push("/about")}>About</Button>
 
+          <Tooltip title="toggle light/dark mode">
             <IconButton onClick={toggleDarkMode}>
               {theme.palette.type === "light" ? (
-                <Brightness7Icon />
-              ) : (
                 <Brightness4Icon />
+              ) : (
+                <Brightness7Icon />
               )}
             </IconButton>
-
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+          </Tooltip>
+          <IconButton>
+            <Avatar />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open
+          })
+        }}
+      >
+        <div className={classes.toolbar2}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon
+                style={{
+                  color: theme.palette.type === "dark" ? "#fff" : "#fff"
+                }}
+              />
+            ) : (
+              <ChevronLeftIcon
+                style={{
+                  color: theme.palette.type === "dark" ? "#fff" : "#fff"
+                }}
+              />
+            )}
+          </IconButton>
+        </div>
+        <Divider />
+        <div className={classes.deep}>
+          <List>
+            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon className={classes.icon}>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            <ListItem button>
+              <ListItemIcon className={classes.icon}>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="All Mail" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon className={classes.icon}>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Thrash" />
+            </ListItem>
+            <ListItem button onClick={handleCollapse}>
+              <ListItemIcon className={classes.icon}>
+                <MailIcon />
+              </ListItemIcon>
+              <ListItemText primary="Spam" />
+              {collapse ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={collapse} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon className={classes.icon}>
+                    <MailIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Starred" />
+                </ListItem>
+              </List>
+            </Collapse>
+          </List>
+        </div>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {children}
+      </main>
     </div>
   );
 }
