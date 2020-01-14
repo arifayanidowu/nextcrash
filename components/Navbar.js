@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(4)
   },
   icon: {
-    color: "#fff"
+    color: "#85898f"
   }
 }));
 
@@ -207,14 +207,16 @@ export default function Navbar({ children, toggleDarkMode }) {
         <Divider />
         <div className={classes.deep}>
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon className={classes.icon}>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            {["Dashboard", "Vendors", "Profile", "Projects"].map(
+              (text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon className={classes.icon}>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              )
+            )}
           </List>
           <Divider />
           <List>
@@ -222,19 +224,19 @@ export default function Navbar({ children, toggleDarkMode }) {
               <ListItemIcon className={classes.icon}>
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary="All Mail" />
+              <ListItemText primary="Inventory" />
             </ListItem>
             <ListItem button>
               <ListItemIcon className={classes.icon}>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="Thrash" />
+              <ListItemText primary="Purchasing" />
             </ListItem>
             <ListItem button onClick={handleCollapse}>
               <ListItemIcon className={classes.icon}>
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText primary="Spam" />
+              <ListItemText primary="Setup" />
               {collapse ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={collapse} timeout="auto" unmountOnExit>
