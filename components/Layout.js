@@ -6,7 +6,12 @@ import { makeStyles } from "@material-ui/styles";
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(8),
-    marginTop: 40
+    marginTop: 40,
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: theme.spacing(6),
+      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3)
+    }
   },
   toolbar: {
     display: "flex",
@@ -17,16 +22,20 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
+    paddingTop: theme.spacing(8),
+    marginTop: 40
   }
 }));
 
-export default function Layout({ children, toggleDarkMode }) {
+export default function Layout({ children, toggleDarkMode, auth }) {
   const classes = useStyles();
   return (
     <>
       <title>RSEDGE</title>
-      <Navbar toggleDarkMode={toggleDarkMode}>{children}</Navbar>
+      <Navbar toggleDarkMode={toggleDarkMode}>
+        <div className={classes.content}>{children}</div>
+      </Navbar>
     </>
   );
 }

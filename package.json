@@ -39,8 +39,10 @@
     "next": "9.1.7",
     "node-fetch": "^2.6.0",
     "nookies": "^2.0.8",
+    "perfect-scrollbar": "^1.4.0",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "react-perfect-scrollbar": "^1.5.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

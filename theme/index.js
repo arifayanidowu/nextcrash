@@ -32,7 +32,8 @@ const themeConfig = {
       main: "#dc004e",
       dark: "#9a0036",
       deep: "#1b2430",
-      navHead: "#232f3e"
+      navHead: "#232f3e",
+      icon: "#84898f"
     },
     success: {
       light: "#81c784",

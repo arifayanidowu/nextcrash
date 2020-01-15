@@ -47,6 +47,9 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           ></link>
           {/* <link rel="stylesheet" type="text/css" href="/nprogress.css" /> */}
+          <link rel="stylesheet" type="text/css" href="/style.css" />
+          <link rel="stylesheet" href="perfect-scroll.css" />
+
           <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"

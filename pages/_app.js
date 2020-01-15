@@ -1,3 +1,4 @@
+import App from "next/app";
 import React, { useState } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 
@@ -31,7 +32,7 @@ const useDarkMode = () => {
   return [theme, toggleDarkMode];
 };
 
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   const [theme, toggleDarkMode] = useDarkMode();
   const themeConfig = createMuiTheme(theme);
 
@@ -39,10 +40,21 @@ export default function App({ Component, pageProps }) {
     <ApolloProvider client={client}>
       <MuiThemeProvider theme={themeConfig}>
         <CssBaseline />
-        <Layout toggleDarkMode={toggleDarkMode}>
+        <Layout toggleDarkMode={toggleDarkMode} {...pageProps}>
           <Component {...pageProps} toggleDarkMode={toggleDarkMode} />
         </Layout>
       </MuiThemeProvider>
     </ApolloProvider>
   );
 }
+
+MyApp.getInitialProps = async appContext => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  appProps.pageProps.auth = true;
+
+  return { ...appProps };
+};
+
+export default MyApp;

@@ -3,6 +3,9 @@ import { useQuery } from "@apollo/react-hooks";
 import { GET_USERS } from "../queries";
 import { List, ListItem, ListItemText, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import Loader from "./Loader";
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -18,7 +21,7 @@ export default function HomeComponent() {
   const classes = useStyles();
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (error) {
