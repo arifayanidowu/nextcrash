@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import Navbar from "./Navbar";
 import { makeStyles } from "@material-ui/styles";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +35,9 @@ export default function Layout({ children, toggleDarkMode, auth }) {
     <>
       <title>RSEDGE</title>
       <Navbar toggleDarkMode={toggleDarkMode}>
-        <div className={classes.content}>{children}</div>
+        <PerfectScrollbar>
+          <div className={classes.content}>{children}</div>
+        </PerfectScrollbar>
       </Navbar>
     </>
   );

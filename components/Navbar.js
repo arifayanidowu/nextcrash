@@ -24,15 +24,21 @@ import Menu from "@material-ui/core/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SettingsApplicationsIcon from "@material-ui/icons/SettingsApplications";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import StarBorder from "@material-ui/icons/StarBorder";
+import { useRouter } from "next/router";
 
 import PerfectScrollbar from "react-perfect-scrollbar";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,21 +106,60 @@ const useStyles = makeStyles(theme => ({
   title: {
     display: "none",
     fontWeight: 600,
+    cursor: "pointer",
+    transition: "color 300ms ease",
     [theme.breakpoints.up("lg")]: {
       display: "block"
+    },
+    "&:hover": {
+      color: "#477585"
     }
   },
   icon: {
     color: "#fff"
+  },
+  nested: {
+    paddingLeft: theme.spacing(2)
   }
 }));
 
 function Navbar({ container, children, toggleDarkMode }) {
   const classes = useStyles();
   const theme = useTheme();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [budgets, setBudgets] = React.useState(false);
+  const [purchase, setPurchase] = React.useState(false);
+  const [sales, setSales] = React.useState(false);
+  const [roles, setRoles] = React.useState(false);
+  const [setup, setSetup] = React.useState(false);
+  const [inventory, setInventory] = React.useState(false);
+
+  const handleBudgetsDropdown = () => {
+    setBudgets(!budgets);
+  };
+
+  const handleInventoryDropdown = () => {
+    setInventory(!inventory);
+  };
+
+  const handlePurchaseDropdown = () => {
+    setPurchase(!purchase);
+  };
+
+  const handleSalesDropdown = () => {
+    setSales(!sales);
+  };
+
+  const handleRolesDropdown = () => {
+    setRoles(!roles);
+  };
+
+  const handleSetupDropdown = () => {
+    setSetup(!setup);
+  };
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -198,6 +243,17 @@ function Navbar({ container, children, toggleDarkMode }) {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <Icon className="fas fa-sign-out-alt" />
+        </IconButton>
+        <p>Logout</p>
+      </MenuItem>
     </Menu>
   );
 
@@ -228,22 +284,85 @@ function Navbar({ container, children, toggleDarkMode }) {
             </ListItemIcon>
             <ListItemText primary="Vendors" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={handleBudgetsDropdown}>
             <ListItemIcon>
               <AccountBalanceIcon />
             </ListItemIcon>
             <ListItemText primary="Budgets" />
+            {budgets ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <ListItem button>
+          <Collapse in={budgets} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>AB</>
+                </ListItemIcon>
+                <ListItemText primary="Annual Budget" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>MB</>
+                </ListItemIcon>
+                <ListItemText primary="Monthly Budget" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>SB</>
+                </ListItemIcon>
+                <ListItemText primary="Supplementary Budget" />
+              </ListItem>
+            </List>
+          </Collapse>
+          <ListItem button onClick={handleInventoryDropdown}>
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Inventory Mgt." />
+            {inventory ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={inventory} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <> SR</>
+                </ListItemIcon>
+                <ListItemText primary="Store Requisition" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>GP</>
+                </ListItemIcon>
+                <ListItemText primary="Gate Pass" />
+              </ListItem>
+            </List>
+          </Collapse>
         </List>
         <Divider />
         <List>
-          <ListItem button>
+          <ListItem button onClick={handleSalesDropdown}>
+            <ListItemIcon>
+              <MonetizationOnIcon />
+            </ListItemIcon>
+            <ListItemText primary="Sales Mgt." />
+            {sales ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={sales} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>SO</>
+                </ListItemIcon>
+                <ListItemText primary="Sales Order" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>QR</>
+                </ListItemIcon>
+                <ListItemText primary="Quotation" />
+              </ListItem>
+            </List>
+          </Collapse>
+          <ListItem button onClick={handlePurchaseDropdown}>
             <ListItemIcon>
               <Icon
                 className="fas fa-money-bill-wave-alt"
@@ -251,19 +370,112 @@ function Navbar({ container, children, toggleDarkMode }) {
               />
             </ListItemIcon>
             <ListItemText primary="Purchasing" />
+            {purchase ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <ListItem button>
+          <Collapse in={purchase} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>PR</>
+                </ListItemIcon>
+                <ListItemText primary="Purchase Requisition" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>RFQ</>
+                </ListItemIcon>
+                <ListItemText primary="Request for Quotation" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>QR</>
+                </ListItemIcon>
+                <ListItemText primary="Quotation Request" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>PO</>
+                </ListItemIcon>
+                <ListItemText primary="Purchase Order" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>RI</>
+                </ListItemIcon>
+                <ListItemText primary="Receiving & Inspection" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>RL</>
+                </ListItemIcon>
+                <ListItemText primary="Rejection Logs" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>OM</>
+                </ListItemIcon>
+                <ListItemText primary="Open Market" />
+              </ListItem>
+            </List>
+          </Collapse>
+          <ListItem button onClick={handleRolesDropdown}>
             <ListItemIcon>
               <SettingsApplicationsIcon />
             </ListItemIcon>
             <ListItemText primary="Role Mgt." />
+            {roles ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <ListItem button>
+          <Collapse in={roles} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>DH</>
+                </ListItemIcon>
+                <ListItemText primary="Divisional Heads" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>AP</>
+                </ListItemIcon>
+                <ListItemText primary="Approvers" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>RV</>
+                </ListItemIcon>
+                <ListItemText primary="Reviewers" />
+              </ListItem>
+            </List>
+          </Collapse>
+          <ListItem button onClick={handleSetupDropdown}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Setup" />
+            {setup ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={setup} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>EH</>
+                </ListItemIcon>
+                <ListItemText primary="Expense Header" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>LOC</>
+                </ListItemIcon>
+                <ListItemText primary="Location" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>US</>
+                </ListItemIcon>
+                <ListItemText primary="Users" />
+              </ListItem>
+            </List>
+          </Collapse>
         </List>
       </div>
     </PerfectScrollbar>
@@ -271,7 +483,7 @@ function Navbar({ container, children, toggleDarkMode }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.appBar} color="default">
+      <AppBar position="fixed" className={classes.appBar} color="inherit">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -282,7 +494,12 @@ function Navbar({ container, children, toggleDarkMode }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap className={classes.title}>
+          <Typography
+            variant="h6"
+            noWrap
+            className={classes.title}
+            onClick={() => router.push("/")}
+          >
             RSEDGE
           </Typography>
           <div className={classes.grow} />
@@ -300,13 +517,16 @@ function Navbar({ container, children, toggleDarkMode }) {
                 )}
               </IconButton>
             </Tooltip>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={() => router.push("/notifications")}
+            >
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
             <IconButton
-              edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
@@ -315,6 +535,11 @@ function Navbar({ container, children, toggleDarkMode }) {
             >
               <Avatar />
             </IconButton>
+            <Tooltip title="Logout">
+              <IconButton edge="end" aria-haspopup="true" color="inherit">
+                <Icon className="fas fa-sign-out-alt" />
+              </IconButton>
+            </Tooltip>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
