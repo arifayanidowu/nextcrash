@@ -17,7 +17,13 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme, fade } from "@material-ui/core/styles";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
-import { Avatar, ListItemAvatar, Tooltip, Icon } from "@material-ui/core";
+import {
+  Avatar,
+  ListItemAvatar,
+  Tooltip,
+  Icon,
+  Button
+} from "@material-ui/core";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -123,7 +129,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Navbar({ container, children, toggleDarkMode }) {
+function Navbar({ container, children, toggleDarkMode, auth }) {
   const classes = useStyles();
   const theme = useTheme();
   const router = useRouter();
@@ -136,6 +142,11 @@ function Navbar({ container, children, toggleDarkMode }) {
   const [roles, setRoles] = React.useState(false);
   const [setup, setSetup] = React.useState(false);
   const [inventory, setInventory] = React.useState(false);
+  const [navwidth, setNavwitdth] = React.useState(true);
+
+  // React.useEffect(() => {
+  //   setNavwitdth(!auth);
+  // }, [auth]);
 
   const handleBudgetsDropdown = () => {
     setBudgets(!budgets);
@@ -483,75 +494,99 @@ function Navbar({ container, children, toggleDarkMode }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" className={classes.appBar} color="inherit">
+      <AppBar
+        position="fixed"
+        className={classes.appBar}
+        color={!auth ? "inherit" : "primary"}
+        style={{
+          width: navwidth ? "100%" : ""
+          // backgroundColor: !auth ? "" : "transparent",
+          // boxShadow: auth && "none"
+        }}
+      >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            className={classes.title}
+          {!auth && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Button
+            className={!auth ? classes.title : ""}
             onClick={() => router.push("/")}
+            style={{ color: theme.palette.background.paper }}
           >
             RSEDGE
-          </Typography>
+          </Button>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <Tooltip title="toggle light/dark theme">
-              <IconButton
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={toggleDarkMode}
+
+          {auth ? (
+            <div>
+              <Button
+                style={{ color: theme.palette.background.paper }}
+                onClick={() => router.push("/login")}
               >
-                {theme.palette.type === "light" ? (
-                  <Brightness4Icon />
-                ) : (
-                  <Brightness7Icon />
-                )}
-              </IconButton>
-            </Tooltip>
-            <IconButton
-              aria-label="show 17 new notifications"
-              color="inherit"
-              onClick={() => router.push("/notifications")}
-            >
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <Avatar />
-            </IconButton>
-            <Tooltip title="Logout">
-              <IconButton edge="end" aria-haspopup="true" color="inherit">
-                <Icon className="fas fa-sign-out-alt" />
-              </IconButton>
-            </Tooltip>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
+                Login
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div className={classes.sectionDesktop}>
+                <Tooltip title="toggle light/dark theme">
+                  <IconButton
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                    onClick={toggleDarkMode}
+                  >
+                    {theme.palette.type === "light" ? (
+                      <Brightness4Icon />
+                    ) : (
+                      <Brightness7Icon />
+                    )}
+                  </IconButton>
+                </Tooltip>
+                <IconButton
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                  onClick={() => router.push("/notifications")}
+                >
+                  <Badge badgeContent={17} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <Avatar />
+                </IconButton>
+                <Tooltip title="Logout">
+                  <IconButton edge="end" aria-haspopup="true" color="inherit">
+                    <Icon className="fas fa-sign-out-alt" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <>
@@ -559,38 +594,39 @@ function Navbar({ container, children, toggleDarkMode }) {
         {renderMenu}
       </>
 
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            ModalProps={{
-              keepMounted: true // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-
+      {!auth && (
+        <nav className={classes.drawer} aria-label="mailbox folders">
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={container}
+              variant="temporary"
+              anchor={theme.direction === "rtl" ? "right" : "left"}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              ModalProps={{
+                keepMounted: true // Better open performance on mobile.
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              variant="permanent"
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+      )}
       {children}
     </div>
   );

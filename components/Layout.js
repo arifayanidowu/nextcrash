@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import Navbar from "./Navbar";
 import { makeStyles } from "@material-ui/styles";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +25,12 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
     paddingTop: theme.spacing(8),
     marginTop: 40
+  },
+  content2: {
+    padding: theme.spacing(0),
+    paddingTop: theme.spacing(0),
+    // marginTop: 5,
+    flexGrow: 1
   }
 }));
 
@@ -34,10 +39,10 @@ export default function Layout({ children, toggleDarkMode, auth }) {
   return (
     <>
       <title>RSEDGE</title>
-      <Navbar toggleDarkMode={toggleDarkMode}>
-        <PerfectScrollbar>
-          <div className={classes.content}>{children}</div>
-        </PerfectScrollbar>
+      <Navbar toggleDarkMode={toggleDarkMode} auth={auth}>
+        <div className={!auth ? classes.content : classes.content2}>
+          {children}
+        </div>
       </Navbar>
     </>
   );

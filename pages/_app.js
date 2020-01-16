@@ -9,6 +9,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 
 import themeConfig from "../theme";
 import Layout from "../components/Layout";
+
 import client from "../connect";
 
 const useDarkMode = () => {
@@ -40,6 +41,7 @@ function MyApp({ Component, pageProps }) {
     <ApolloProvider client={client}>
       <MuiThemeProvider theme={themeConfig}>
         <CssBaseline />
+
         <Layout toggleDarkMode={toggleDarkMode} {...pageProps}>
           <Component {...pageProps} toggleDarkMode={toggleDarkMode} />
         </Layout>
