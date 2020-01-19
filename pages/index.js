@@ -5,8 +5,11 @@ import Landing from "../components/Landing";
 
 const Home = ({ toggleDarkMode, auth }) => {
   return (
+    // <div>
+    //   {auth ? <Landing /> : <HomeComponent toggleDarkMode={toggleDarkMode} />}
+    // </div>
     <div>
-      {auth ? <Landing /> : <HomeComponent toggleDarkMode={toggleDarkMode} />}
+      <HomeComponent toggleDarkMode={toggleDarkMode} />
     </div>
   );
 };

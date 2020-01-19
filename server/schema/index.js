@@ -11,12 +11,17 @@ const typeDefs = gql`
     username: String
   }
 
+  type AuthData {
+    token: String
+  }
+
   type Query {
     users: [User]
   }
 
   type Mutation {
     addUser(email: String!, password: String!, username: String!): User
+    login(email: String, password: String): AuthData
   }
 `;
 
@@ -49,13 +54,43 @@ const resolvers = {
       } catch (error) {
         throw new ApolloError(error);
       }
+    },
+    login: async (_, { email, password }, { User }) => {
+      try {
+        const user = await User.findOne({ email });
+        if (!user) {
+          throw new ApolloError("User does not exist");
+        }
+        const comparePass = await bcrypt.compare(password, user.password);
+        if (!comparePass) {
+          throw new ApolloError("Password incorrect");
+        } else {
+          let token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "1d"
+          });
+          return { token };
+        }
+      } catch (error) {
+        throw new ApolloError(error);
+      }
     }
   }
 };
 
+const getUser = token => {
+  if (token) {
+    return jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
+  } else {
+    return null;
+  }
+};
+
 const context = ({ req }) => {
+  const token = req.headers.authorization || "";
+  const currentUser = getUser(token);
   return {
-    User
+    User,
+    currentUser
   };
 };
 

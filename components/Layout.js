@@ -40,9 +40,10 @@ export default function Layout({ children, toggleDarkMode, auth }) {
     <>
       <title>RSEDGE</title>
       <Navbar toggleDarkMode={toggleDarkMode} auth={auth}>
-        <div className={!auth ? classes.content : classes.content2}>
+        {/* <div className={!auth ? classes.content : classes.content2}>
           {children}
-        </div>
+        </div> */}
+        <div className={classes.content}>{children}</div>
       </Navbar>
     </>
   );

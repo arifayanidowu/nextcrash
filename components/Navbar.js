@@ -118,7 +118,7 @@ const useStyles = makeStyles(theme => ({
       display: "block"
     },
     "&:hover": {
-      color: "#477585"
+      color: theme.palette.secondary.light
     }
   },
   icon: {
@@ -177,6 +177,11 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleRoute = path => {
+    router.push(path);
+    setMobileOpen(false);
   };
 
   const handleProfileMenuOpen = event => {
@@ -285,7 +290,9 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
         <List>
           <ListItem button>
             <ListItemIcon>
-              <Icon className="fas fa-chart-area" style={{ color: "#fff" }} />
+              <Icon>
+                <img src="/dashboard.png" />
+              </Icon>
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
@@ -352,7 +359,9 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
         <List>
           <ListItem button onClick={handleSalesDropdown}>
             <ListItemIcon>
-              <MonetizationOnIcon />
+              <Icon>
+                <img src="/naira.png" />
+              </Icon>
             </ListItemIcon>
             <ListItemText primary="Sales Mgt." />
             {sales ? <ExpandLess /> : <ExpandMore />}
@@ -375,10 +384,9 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
           </Collapse>
           <ListItem button onClick={handlePurchaseDropdown}>
             <ListItemIcon>
-              <Icon
-                className="fas fa-money-bill-wave-alt"
-                style={{ color: "#fff" }}
-              />
+              <Icon>
+                <img src="/icons8-money.png" />
+              </Icon>
             </ListItemIcon>
             <ListItemText primary="Purchasing" />
             {purchase ? <ExpandLess /> : <ExpandMore />}
@@ -479,11 +487,27 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
                 </ListItemIcon>
                 <ListItemText primary="Location" />
               </ListItem>
-              <ListItem button className={classes.nested}>
+              <ListItem
+                button
+                className={classes.nested}
+                onClick={() => handleRoute("/")}
+              >
                 <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
                   <>US</>
                 </ListItemIcon>
                 <ListItemText primary="Users" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>CA</>
+                </ListItemIcon>
+                <ListItemText primary="Create User Account" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>VC</>
+                </ListItemIcon>
+                <ListItemText primary="Vendor Contracts" />
               </ListItem>
             </List>
           </Collapse>
@@ -497,35 +521,33 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
       <AppBar
         position="fixed"
         className={classes.appBar}
-        color={!auth ? "inherit" : "primary"}
-        style={{
-          width: navwidth ? "100%" : ""
-          // backgroundColor: !auth ? "" : "transparent",
-          // boxShadow: auth && "none"
-        }}
+        // color={!auth ? "inherit" : "primary"}
+        color="inherit"
+        style={
+          {
+            // width: navwidth ? "100%" : ""
+            // backgroundColor: !auth ? "" : "transparent",
+            // boxShadow: auth && "none"
+          }
+        }
       >
         <Toolbar>
-          {!auth && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Button
-            className={!auth ? classes.title : ""}
-            onClick={() => router.push("/")}
-            style={{ color: theme.palette.background.paper }}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
           >
+            <MenuIcon />
+          </IconButton>
+
+          <Button className={classes.title} onClick={() => router.push("/")}>
             RSEDGE
           </Button>
           <div className={classes.grow} />
 
-          {auth ? (
+          {/* {!auth ? (
             <div>
               <Button
                 style={{ color: theme.palette.background.paper }}
@@ -586,7 +608,57 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
                 </IconButton>
               </div>
             </>
-          )}
+          )} */}
+
+          <div className={classes.sectionDesktop}>
+            <Tooltip title="toggle light/dark theme">
+              <IconButton
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={toggleDarkMode}
+              >
+                {theme.palette.type === "light" ? (
+                  <Brightness4Icon />
+                ) : (
+                  <Brightness7Icon />
+                )}
+              </IconButton>
+            </Tooltip>
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={() => router.push("/notifications")}
+            >
+              <Badge badgeContent={17} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Avatar />
+            </IconButton>
+            <Tooltip title="Logout">
+              <IconButton edge="end" aria-haspopup="true" color="inherit">
+                <Icon className="fas fa-sign-out-alt" />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
       <>
@@ -594,39 +666,38 @@ function Navbar({ container, children, toggleDarkMode, auth }) {
         {renderMenu}
       </>
 
-      {!auth && (
-        <nav className={classes.drawer} aria-label="mailbox folders">
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Hidden smUp implementation="css">
-            <Drawer
-              container={container}
-              variant="temporary"
-              anchor={theme.direction === "rtl" ? "right" : "left"}
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              ModalProps={{
-                keepMounted: true // Better open performance on mobile.
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <Drawer
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              variant="permanent"
-              open
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-        </nav>
-      )}
+      <nav className={classes.drawer} aria-label="mailbox folders">
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Hidden smUp implementation="css">
+          <Drawer
+            container={container}
+            variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+            ModalProps={{
+              keepMounted: true // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+
       {children}
     </div>
   );
