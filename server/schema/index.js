@@ -7,8 +7,13 @@ const typeDefs = gql`
   type User {
     id: ID
     email: String
-    password: String
-    username: String
+    firstname: String
+    lastname: String
+    eid: String
+    phone: String
+    code: String
+    division: String
+    subdivision: String
   }
 
   type AuthData {
@@ -17,10 +22,20 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
+    user: User
   }
 
   type Mutation {
-    addUser(email: String!, password: String!, username: String!): User
+    addUser(
+      email: String!
+      firstname: String!
+      lastname: String!
+      code: String!
+      division: String!
+      subdivision: String!
+      phone: String!
+      eid: String!
+    ): User
     login(email: String, password: String): AuthData
   }
 `;
@@ -37,19 +52,29 @@ const resolvers = {
     }
   },
   Mutation: {
-    addUser: async (_, { email, password, username }, { User }) => {
+    addUser: async (
+      _,
+      { email, firstname, lastname, code, eid, division, subdivision, phone },
+      { User }
+    ) => {
       try {
         const isEmail = await User.findOne({ email });
         if (isEmail) {
           throw new ApolloError("User already exist.");
         }
+        const password = "password";
         const user = await new User();
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
         user.email = email;
         user.password = hash;
-        user.username = username;
-
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.code = code;
+        user.eid = eid;
+        user.division = division;
+        user.subdivision = subdivision;
+        user.phone = phone;
         return user.save();
       } catch (error) {
         throw new ApolloError(error);

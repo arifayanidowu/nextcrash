@@ -11,6 +11,8 @@ import themeConfig from "../theme";
 import Layout from "../components/Layout";
 
 import client from "../connect";
+import { parseCookies } from "nookies";
+import { redirectUser } from "../utils/auth";
 
 const useDarkMode = () => {
   const [theme, setTheme] = useState(themeConfig);
@@ -50,13 +52,21 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-MyApp.getInitialProps = async appContext => {
+MyApp.getInitialProps = async ({ Component, ctx }) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
-  const appProps = await App.getInitialProps(appContext);
+  const { token } = parseCookies(ctx);
+  let pageProps = {};
 
-  appProps.pageProps.auth = true;
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
 
-  return { ...appProps };
+  if (token) {
+    pageProps.token = token;
+  }
+  return {
+    pageProps
+  };
 };
 
 export default MyApp;

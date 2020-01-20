@@ -48,7 +48,7 @@ export default class MyDocument extends Document {
           ></link>
           {/* <link rel="stylesheet" type="text/css" href="/nprogress.css" /> */}
           <link rel="stylesheet" type="text/css" href="/style.css" />
-          <link rel="stylesheet" href="perfect-scroll.css" />
+          <link rel="stylesheet" href="/perfect-scroll.css" />
 
           <link
             rel="stylesheet"

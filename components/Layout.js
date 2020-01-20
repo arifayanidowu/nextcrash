@@ -34,16 +34,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Layout({ children, toggleDarkMode, auth }) {
+export default function Layout({ children, toggleDarkMode, token }) {
   const classes = useStyles();
   return (
     <>
       <title>RSEDGE</title>
-      <Navbar toggleDarkMode={toggleDarkMode} auth={auth}>
-        {/* <div className={!auth ? classes.content : classes.content2}>
+      <Navbar toggleDarkMode={toggleDarkMode} token={token}>
+        <div className={token ? classes.content : classes.content2}>
           {children}
-        </div> */}
-        <div className={classes.content}>{children}</div>
+        </div>
       </Navbar>
     </>
   );

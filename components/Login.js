@@ -9,11 +9,14 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Link from "next/link";
+import { LOGIN } from "../queries";
+import { useMutation } from "@apollo/react-hooks";
+import { handleLogin } from "../utils/auth";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
-    height: "100vh"
+    width: "100%"
+    // height: "100vh"
     // backgroundImage:
     //   "radial-gradient(circle at 17% 36%, rgba(35, 35, 35,0.06) 0%, rgba(35, 35, 35,0.06) 25%,rgba(42, 42, 42,0.06) 25%, rgba(42, 42, 42,0.06) 50%,rgba(48, 48, 48,0.06) 50%, rgba(48, 48, 48,0.06) 75%,rgba(55, 55, 55,0.06) 75%, rgba(55, 55, 55,0.06) 100%),radial-gradient(circle at 4% 82%, rgba(0, 0, 0,0.06) 0%, rgba(0, 0, 0,0.06) 25%,rgba(39, 39, 39,0.06) 25%, rgba(39, 39, 39,0.06) 50%,rgba(78, 78, 78,0.06) 50%, rgba(78, 78, 78,0.06) 75%,rgba(117, 117, 117,0.06) 75%, rgba(117, 117, 117,0.06) 100%),radial-gradient(circle at 45% 66%, rgba(64, 64, 64,0.06) 0%, rgba(64, 64, 64,0.06) 25%,rgba(91, 91, 91,0.06) 25%, rgba(91, 91, 91,0.06) 50%,rgba(117, 117, 117,0.06) 50%, rgba(117, 117, 117,0.06) 75%,rgba(144, 144, 144,0.06) 75%, rgba(144, 144, 144,0.06) 100%),linear-gradient(129deg, rgb(29, 29, 29),rgb(24, 24, 24))"
   },
@@ -38,7 +41,8 @@ const useStyles = makeStyles(theme => ({
   },
   center: {
     textAlign: "center",
-    paddingTop: theme.spacing(20)
+    height: "100vh",
+    paddingTop: "150px"
   },
   form: {},
   textField: {
@@ -46,13 +50,40 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const INIT_STATE = {
+  email: "",
+  password: ""
+};
+
 export default function Login() {
   const classes = useStyles();
   const [togglePassword, setTogglePassword] = useState(false);
+  const [login] = useMutation(LOGIN);
+  const [state, setState] = useState(INIT_STATE);
 
   const onToggle = () => {
     setTogglePassword(!togglePassword);
   };
+
+  const handleChange = e => {
+    e.persist();
+    setState(prevState => ({ ...prevState, [e.target.id]: e.target.value }));
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    login({
+      variables: {
+        email: state.email,
+        password: state.password
+      }
+    })
+      .then(doc => {
+        handleLogin(doc.data.login.token);
+      })
+      .catch(err => console.error(err));
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.center}>
@@ -60,7 +91,7 @@ export default function Login() {
           <Typography align="center" variant="h3" gutterBottom>
             LOGIN
           </Typography>
-          <form className={classes.form}>
+          <form onSubmit={handleSubmit} className={classes.form}>
             <TextField
               id="email"
               type="email"
@@ -69,6 +100,8 @@ export default function Login() {
               placeholder="Email"
               fullWidth
               className={classes.textField}
+              value={state.email}
+              onChange={handleChange}
             />
             <TextField
               id="password"
@@ -77,6 +110,7 @@ export default function Login() {
               variant="outlined"
               placeholder="Password"
               fullWidth
+              onChange={handleChange}
               className={classes.textField}
               InputProps={{
                 endAdornment: (

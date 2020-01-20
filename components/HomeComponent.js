@@ -35,7 +35,7 @@ export default function HomeComponent() {
         <List className={classes.list}>
           {data.users.map(user => (
             <ListItem key={user.id} button>
-              <ListItemText primary={user.username} />
+              <ListItemText primary={user.firstname} />
             </ListItem>
           ))}
         </List>
