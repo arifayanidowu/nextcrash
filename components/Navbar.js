@@ -280,7 +280,12 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
           aria-haspopup="true"
           color="inherit"
         >
-          <Icon className="fas fa-sign-out-alt" />
+          {/* <Icon className="fas fa-sign-out-alt" /> */}
+          {theme.palette.type === "light" ? (
+            <img src="/logout2.png" alt="logout2" />
+          ) : (
+            <img src="/logout.png" alt="logout" />
+          )}
         </IconButton>
         <p>Logout</p>
       </MenuItem>
@@ -625,7 +630,11 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
                     color="inherit"
                     onClick={onLogout}
                   >
-                    <Icon className="fas fa-sign-out-alt" />
+                    {theme.palette.type === "light" ? (
+                      <img src="/logout2.png" alt="logout2" />
+                    ) : (
+                      <img src="/logout.png" alt="logout" />
+                    )}
                   </IconButton>
                 </Tooltip>
               </div>

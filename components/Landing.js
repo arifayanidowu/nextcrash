@@ -59,6 +59,22 @@ const useStyles = makeStyles(theme => ({
       opacity: 1,
       transform: "translateX(3px)"
     }
+  },
+  ball: {
+    position: "absolute",
+    top: "50%",
+    left: "10%",
+    animation: "$bounce 2s 300ms ease-in-out alternate infinite",
+    animationPlayState: "running"
+  },
+  "@keyframes bounce": {
+    "0%": {
+      transform: "translateY(-5px)"
+    },
+
+    "100%": {
+      transform: "translateY(5px)"
+    }
   }
 }));
 
@@ -84,6 +100,15 @@ export default function Landing() {
         >
           Get Started <ChevronRightIcon className={classes.icon} />
         </Button>
+      </div>
+      <div>
+        <img
+          className={classes.ball}
+          width="60px"
+          height="60px"
+          src="/ellipse.png"
+          alt="ball"
+        />
       </div>
     </div>
   );
