@@ -106,7 +106,7 @@ export default function Landing() {
           className={classes.ball}
           width="60px"
           height="60px"
-          src="/cardboard_box.png"
+          src="/ellipse.png"
           alt="ball"
         />
       </div>
