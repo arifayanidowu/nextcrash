@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function HomeComponent() {
+export default function UsersComponent() {
   const { loading, error, data } = useQuery(GET_USERS, {
     // ssr: true,
     errorPolicy: "all"

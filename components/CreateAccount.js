@@ -8,7 +8,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  Button
+  Button,
+  MenuItem
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "../utils/countries";
@@ -37,6 +38,10 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
     lineHeight: 2
+  },
+  label: {
+    background: theme.palette.background.paper,
+    padding: 3
   }
 }));
 
@@ -164,7 +169,11 @@ export default function CreateAccount() {
                 fullWidth
                 required
               >
-                <InputLabel ref={inputLabel} htmlFor="division">
+                <InputLabel
+                  ref={inputLabel}
+                  htmlFor="division"
+                  className={classes.label}
+                >
                   Divisions
                 </InputLabel>
                 <Select
@@ -197,12 +206,17 @@ export default function CreateAccount() {
                 fullWidth
                 required
               >
-                <InputLabel ref={inputLabel} htmlFor="subdivision">
+                <InputLabel
+                  ref={inputLabel}
+                  htmlFor="subdivision"
+                  id="subdivision"
+                >
                   Sub Divisions
                 </InputLabel>
                 <Select
                   native
                   //   labelWidth={labelWidth}
+                  labelId="subdivision"
                   inputProps={{
                     name: "subdivision",
                     id: "subdivision"

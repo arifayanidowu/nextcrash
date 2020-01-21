@@ -1,4 +1,9 @@
-const { gql, ApolloError, ApolloServer } = require("apollo-server-express");
+const {
+  gql,
+  ApolloError,
+  ApolloServer,
+  AuthenticationError
+} = require("apollo-server-express");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -23,6 +28,7 @@ const typeDefs = gql`
   type Query {
     users: [User]
     user: User
+    authUser: User
   }
 
   type Mutation {
@@ -46,6 +52,19 @@ const resolvers = {
       try {
         const users = await User.find({});
         return users;
+      } catch (error) {
+        throw new ApolloError(error);
+      }
+    },
+
+    authUser: async (_, {}, { User, currentUser }) => {
+      if (!currentUser || currentUser === null) {
+        throw new AuthenticationError("Unauthorized");
+      }
+      try {
+        const user = await User.findOne({ _id: currentUser.userId });
+        // console.log(user);
+        return user;
       } catch (error) {
         throw new ApolloError(error);
       }

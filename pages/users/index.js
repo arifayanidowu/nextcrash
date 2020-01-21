@@ -1,10 +1,10 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import UsersComponent from "../../components/UsersComponent";
 
-export default function index() {
+export default function index({ toggleDarkMode }) {
   return (
     <div>
-      <Typography>Users Index Page</Typography>
+      <UsersComponent toggleDarkMode={toggleDarkMode} />
     </div>
   );
 }

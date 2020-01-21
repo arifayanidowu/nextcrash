@@ -15,6 +15,21 @@ export const GET_USERS = gql`
   }
 `;
 
+export const AUTH_USER = gql`
+  {
+    authUser {
+      id
+      email
+      firstname
+      lastname
+      eid
+      division
+      subdivision
+      phone
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation Login($email: String, $password: String) {
     login(email: $email, password: $password) {

@@ -9,10 +9,12 @@ import { ApolloProvider } from "@apollo/react-hooks";
 
 import themeConfig from "../theme";
 import Layout from "../components/Layout";
+import axios from "axios";
 
 import client from "../connect";
 import { parseCookies } from "nookies";
 import { redirectUser } from "../utils/auth";
+import baseUrl from "../utils/baseUrl";
 
 const useDarkMode = () => {
   const [theme, setTheme] = useState(themeConfig);
@@ -63,6 +65,35 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
 
   if (token) {
     pageProps.token = token;
+
+    const res = await axios({
+      method: "POST",
+      url: `${baseUrl}/graphql`,
+      data: {
+        query: `
+            {
+              authUser {
+                id
+                email
+                eid
+                firstname
+                lastname
+                division
+                subdivision
+                phone
+              }
+            }
+        
+        `
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    pageProps.user = await res.data.data;
+  } else {
+    pageProps.user = null;
   }
   return {
     pageProps

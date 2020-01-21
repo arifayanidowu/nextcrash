@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
   form: {},
   textField: {
     marginBottom: theme.spacing(3)
+  },
+  link: {
+    color: theme.palette.secondary.black
   }
 }));
 
@@ -58,7 +61,7 @@ const INIT_STATE = {
 export default function Login() {
   const classes = useStyles();
   const [togglePassword, setTogglePassword] = useState(false);
-  const [login] = useMutation(LOGIN);
+  const [login, { loading }] = useMutation(LOGIN);
   const [state, setState] = useState(INIT_STATE);
 
   const onToggle = () => {
@@ -129,8 +132,9 @@ export default function Login() {
               color="secondary"
               type="submit"
               size="large"
+              disabled={!(state.email && state.password) || loading}
             >
-              Login
+              {loading ? <span>Loading...</span> : <span>Login</span>}
             </Button>
           </form>
           <Grid
@@ -140,11 +144,13 @@ export default function Login() {
             style={{ marginTop: 5 }}
           >
             <Link href="/">
-              <a>Forgot Password?</a>
+              <a className={classes.link}>Forgot Password?</a>
             </Link>
 
             <Link href="/">
-              <a>Are you a New Vendor? click to Create an Account</a>
+              <a className={classes.link}>
+                Are you a New Vendor? click to Create an Account
+              </a>
             </Link>
           </Grid>
         </Card>

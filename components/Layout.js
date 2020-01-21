@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import Navbar from "./Navbar";
 import { makeStyles } from "@material-ui/styles";
 
@@ -34,12 +34,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Layout({ children, toggleDarkMode, token }) {
+export default function Layout({ children, toggleDarkMode, token, user }) {
   const classes = useStyles();
+
   return (
     <>
       <title>RSEDGE</title>
-      <Navbar toggleDarkMode={toggleDarkMode} token={token}>
+      <Navbar toggleDarkMode={toggleDarkMode} token={token} user={user}>
         <div className={token ? classes.content : classes.content2}>
           {children}
         </div>

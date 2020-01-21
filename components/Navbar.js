@@ -130,7 +130,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Navbar({ container, children, toggleDarkMode, token }) {
+function Navbar({ container, children, toggleDarkMode, token, user }) {
   const classes = useStyles();
   const theme = useTheme();
   const router = useRouter();
@@ -264,7 +264,7 @@ function Navbar({ container, children, toggleDarkMode, token }) {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem button onClick={handleLogout}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -293,7 +293,7 @@ function Navbar({ container, children, toggleDarkMode, token }) {
 
         <Divider />
         <List>
-          <ListItem button>
+          <ListItem button onClick={() => handleRoute("/")}>
             <ListItemIcon>
               <Icon>
                 <img src="/dashboard.png" />
@@ -539,19 +539,19 @@ function Navbar({ container, children, toggleDarkMode, token }) {
         }}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
+          {token && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
 
-          <Button className={classes.title} onClick={() => router.push("/")}>
-            RSEDGE
-          </Button>
+          <Button onClick={() => router.push("/")}>RSEDGE</Button>
           <div className={classes.grow} />
 
           {!token ? (

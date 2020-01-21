@@ -1,12 +1,15 @@
 import React from "react";
-import HomeComponent from "../components/HomeComponent";
-import { Typography } from "@material-ui/core";
 import Landing from "../components/Landing";
+import Dashboard from "../components/Dashboard";
 
-const Home = ({ toggleDarkMode, token }) => {
+const Home = ({ toggleDarkMode, token, user }) => {
   return (
     <div>
-      {!token ? <Landing /> : <HomeComponent toggleDarkMode={toggleDarkMode} />}
+      {!token ? (
+        <Landing />
+      ) : (
+        <Dashboard toggleDarkMode={toggleDarkMode} user={user} />
+      )}
     </div>
   );
 };
