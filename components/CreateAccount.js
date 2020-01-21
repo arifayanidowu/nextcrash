@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme => ({
   label: {
     background: theme.palette.background.paper,
     padding: 3
+  },
+  select: {
+    background: theme.palette.background.paper
   }
 }));
 
@@ -178,13 +181,14 @@ export default function CreateAccount() {
                 </InputLabel>
                 <Select
                   native
-                  //   labelWidth={labelWidth}
+                  // labelWidth={labelWidth}
                   inputProps={{
                     name: "division",
                     id: "division"
                   }}
                   value={state.division}
                   onChange={handleChange}
+                  className={classes.select}
                 >
                   <option className={classes.option} value="" />
                   {divisions.map((division, i) => (
@@ -210,12 +214,13 @@ export default function CreateAccount() {
                   ref={inputLabel}
                   htmlFor="subdivision"
                   id="subdivision"
+                  className={classes.label}
                 >
                   Sub Divisions
                 </InputLabel>
                 <Select
                   native
-                  //   labelWidth={labelWidth}
+                  // labelWidth={labelWidth}
                   labelId="subdivision"
                   inputProps={{
                     name: "subdivision",

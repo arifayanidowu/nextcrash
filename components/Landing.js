@@ -8,13 +8,14 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     height: "100vh",
-    backgroundImage: "url(/inventory.svg)",
+    backgroundImage: "url(/bg-pattern.png)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
-    backgroundColor: "#000",
+    // backgroundColor: "#000",
     position: "relative",
-    backgroundAttachment: "fixed"
+    overflor: "hidden"
+    // backgroundAttachment: "fixed"
   },
   center: {
     position: "absolute",
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "rgba(0,0,0,0.75)"
   },
   text: {
-    color: theme.palette.background.paper,
+    // color: theme.palette.background.paper,
     marginBottom: theme.spacing(4),
     textTransform: "uppercase",
     fontWeight: 600
@@ -66,7 +67,7 @@ export default function Landing() {
   const router = useRouter();
   return (
     <div className={classes.root}>
-      <div className={classes.overlay} />
+      {/* <div className={classes.overlay} /> */}
       <div className={classes.center}>
         <Typography className={classes.text} variant="h3" gutterBottom>
           Welcome to Russelsmith Edge

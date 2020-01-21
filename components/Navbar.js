@@ -44,6 +44,7 @@ import { useRouter } from "next/router";
 
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { handleLogout } from "../utils/auth";
+import Link from "next/link";
 
 const drawerWidth = 260;
 
@@ -127,6 +128,14 @@ const useStyles = makeStyles(theme => ({
   },
   nested: {
     paddingLeft: theme.spacing(2)
+  },
+  logo: {
+    fontWeight: 900,
+    cursor: "pointer",
+    transition: "all 300ms ease",
+    "&:hover": {
+      color: "#333"
+    }
   }
 }));
 
@@ -533,10 +542,11 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
         // color={!auth ? "inherit" : "primary"}
         color="inherit"
         style={{
-          width: navwidth ? "100%" : ""
-          // backgroundColor: !auth ? "" : "transparent",
+          width: navwidth ? "100%" : "",
+          backgroundColor: !user ? "transparent" : ""
           // boxShadow: auth && "none"
         }}
+        elevation={user ? 3 : 0}
       >
         <Toolbar>
           {token && (
@@ -551,7 +561,11 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
             </IconButton>
           )}
 
-          <Button onClick={() => router.push("/")}>RSEDGE</Button>
+          <Link href="/">
+            <Typography variant="h6" className={classes.logo}>
+              RSEDGE
+            </Typography>
+          </Link>
           <div className={classes.grow} />
 
           {!token ? (
@@ -559,6 +573,13 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
               <Button
                 // style={{ color: theme.palette.background.paper }}
                 onClick={() => router.push("/login")}
+                // size="large"
+                style={{
+                  fontWeight: "bold",
+                  border: "2px solid #4791db",
+                  borderRadius: 50,
+                  width: 100
+                }}
               >
                 Login
               </Button>

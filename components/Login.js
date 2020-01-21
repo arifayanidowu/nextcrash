@@ -15,7 +15,11 @@ import { handleLogin } from "../utils/auth";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
+    width: "100%",
+    backgroundImage: "url(/login-bg.png)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat"
     // height: "100vh"
     // backgroundImage:
     //   "radial-gradient(circle at 17% 36%, rgba(35, 35, 35,0.06) 0%, rgba(35, 35, 35,0.06) 25%,rgba(42, 42, 42,0.06) 25%, rgba(42, 42, 42,0.06) 50%,rgba(48, 48, 48,0.06) 50%, rgba(48, 48, 48,0.06) 75%,rgba(55, 55, 55,0.06) 75%, rgba(55, 55, 55,0.06) 100%),radial-gradient(circle at 4% 82%, rgba(0, 0, 0,0.06) 0%, rgba(0, 0, 0,0.06) 25%,rgba(39, 39, 39,0.06) 25%, rgba(39, 39, 39,0.06) 50%,rgba(78, 78, 78,0.06) 50%, rgba(78, 78, 78,0.06) 75%,rgba(117, 117, 117,0.06) 75%, rgba(117, 117, 117,0.06) 100%),radial-gradient(circle at 45% 66%, rgba(64, 64, 64,0.06) 0%, rgba(64, 64, 64,0.06) 25%,rgba(91, 91, 91,0.06) 25%, rgba(91, 91, 91,0.06) 50%,rgba(117, 117, 117,0.06) 50%, rgba(117, 117, 117,0.06) 75%,rgba(144, 144, 144,0.06) 75%, rgba(144, 144, 144,0.06) 100%),linear-gradient(129deg, rgb(29, 29, 29),rgb(24, 24, 24))"
