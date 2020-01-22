@@ -19,6 +19,8 @@ const typeDefs = gql`
     code: String
     division: String
     subdivision: String
+    role: String
+    password: String
   }
 
   type AuthData {

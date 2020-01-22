@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
     minWidth: 120
   },
   option: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
     lineHeight: 2
   },
   label: {
@@ -44,7 +44,9 @@ const useStyles = makeStyles(theme => ({
     padding: 3
   },
   select: {
-    background: theme.palette.background.paper
+    "&:focus": {
+      background: theme.palette.background.paper
+    }
   }
 }));
 
@@ -74,7 +76,9 @@ export default function CreateAccount() {
   const [labelWidth, setLabelWidth] = useState(0);
   const [code, setCode] = useState(null);
   const [state, setState] = useState(INIT_STATE);
+  const [age, setAge] = useState("");
   const [addUser] = useMutation(CREATE_USER);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -94,7 +98,12 @@ export default function CreateAccount() {
 
   const handleChange = e => {
     e.persist();
-    setState(prevState => ({ ...prevState, [e.target.id]: e.target.value }));
+    setState(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
+  };
+
+  const handleAge = e => {
+    e.persist();
+    setAge(e.target.value);
   };
 
   const handleSubmit = e => {
@@ -132,12 +141,14 @@ export default function CreateAccount() {
       <Typography align="center" variant="h5" component="h1" gutterBottom>
         Create User Account
       </Typography>
+      {/* <Typography>uchechi ngonadi</Typography> */}
       <Card className={classes.card}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TextField
                 id="lastname"
+                name="lastname"
                 type="text"
                 label="Lastname"
                 variant="outlined"
@@ -153,6 +164,7 @@ export default function CreateAccount() {
             <Grid item xs={12} md={6}>
               <TextField
                 id="firstname"
+                name="firstname"
                 type="text"
                 label="Firstname"
                 variant="outlined"
@@ -169,6 +181,7 @@ export default function CreateAccount() {
               <FormControl
                 variant="outlined"
                 className={classes.formControl}
+                // margin="normal"
                 fullWidth
                 required
               >
@@ -226,6 +239,7 @@ export default function CreateAccount() {
                     name: "subdivision",
                     id: "subdivision"
                   }}
+                  name="subdivision"
                   onChange={handleChange}
                   value={state.subdivision}
                 >
@@ -259,6 +273,7 @@ export default function CreateAccount() {
             <Grid item xs={12} md={6}>
               <TextField
                 id="email"
+                name="email"
                 type="email"
                 label="Email"
                 variant="outlined"
@@ -273,6 +288,7 @@ export default function CreateAccount() {
             <Grid item xs={12} md={6}>
               <TextField
                 id="eid"
+                name="eid"
                 type="text"
                 label="EID"
                 variant="outlined"
@@ -316,6 +332,7 @@ export default function CreateAccount() {
             <Grid item xs={12} md={6}>
               <TextField
                 id="phone"
+                name="phone"
                 type="text"
                 label="Phone"
                 variant="outlined"

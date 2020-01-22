@@ -65,7 +65,11 @@ const useStyles = makeStyles(theme => ({
     top: "50%",
     left: "10%",
     animation: "$bounce 2s 300ms ease-in-out alternate infinite",
-    animationPlayState: "running"
+    animationPlayState: "running",
+    // borderRadius: "50%",
+    [theme.breakpoints.down("sm")]: {
+      top: "80%"
+    }
   },
   "@keyframes bounce": {
     "0%": {
@@ -104,9 +108,9 @@ export default function Landing() {
       <div>
         <img
           className={classes.ball}
-          width="60px"
-          height="60px"
-          src="/ellipse.png"
+          width="100px"
+          height="100px"
+          src="/magnet.png"
           alt="ball"
         />
       </div>
