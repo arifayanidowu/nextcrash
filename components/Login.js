@@ -151,7 +151,7 @@ export default function Login() {
               <a className={classes.link}>Forgot Password?</a>
             </Link>
 
-            <Link href="/">
+            <Link href="/vendor/register">
               <a className={classes.link}>
                 Are you a New Vendor? click to Create an Account
               </a>
