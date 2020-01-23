@@ -176,7 +176,7 @@ export default function Add() {
                 variant="contained"
                 onClick={handleNext}
                 disabled={value >= 4}
-                style={{ cursor: value >= 4 && "not-allowed" }}
+                style={{ cursor: value >= 3 && "not-allowed" }}
               >
                 Next
               </Button>
