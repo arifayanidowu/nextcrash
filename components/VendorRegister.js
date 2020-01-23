@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(4)
   },
   content: {
-    backgroundImage: "url(/bg-pattern.png)",
+    backgroundImage: "url(/dots.png)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover"
@@ -140,6 +140,7 @@ export default function VendorRegister() {
                 <Stepper
                   activeStep={activeStep}
                   orientation="vertical"
+                  variant="outlined"
                   style={{
                     backgroundColor: "transparent"
                   }}
@@ -170,7 +171,7 @@ export default function VendorRegister() {
                   <Step>
                     <StepLabel>
                       <Typography className={classes.message}>
-                        login and complete the registration process.
+                        login and complete the rest of the registration process.
                       </Typography>
                     </StepLabel>
                   </Step>

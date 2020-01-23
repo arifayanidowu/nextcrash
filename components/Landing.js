@@ -8,7 +8,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     height: "100vh",
-    backgroundImage: "url(/bg-pattern.png)",
+    // backgroundImage: "url(/bg-pattern.png)",
+    backgroundImage: "url(/dots2.png)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
