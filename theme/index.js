@@ -4,6 +4,7 @@ const themeConfig = {
     suppressDeprecationWarnings: true,
     fontFamily: [
       "Quicksand",
+      "Rubik",
       "-apple-system",
       "BlinkMacSystemFont",
       '"Segoe UI"',

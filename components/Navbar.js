@@ -132,6 +132,7 @@ const useStyles = makeStyles(theme => ({
   logo: {
     fontWeight: 900,
     cursor: "pointer",
+    // color: "#000",
     transition: "all 300ms ease",
     "&:hover": {
       color: "#333"
@@ -150,16 +151,38 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
   const [purchase, setPurchase] = React.useState(false);
   const [sales, setSales] = React.useState(false);
   const [roles, setRoles] = React.useState(false);
+  const [vendors, setVendors] = React.useState(false);
   const [setup, setSetup] = React.useState(false);
   const [inventory, setInventory] = React.useState(false);
   const [navwidth, setNavwitdth] = React.useState(true);
+  const [scroll, setScroll] = React.useState(false);
+  const navRef = React.useRef(null);
 
   React.useEffect(() => {
     setNavwitdth(!token);
   }, [token]);
 
+  navRef.current = scroll;
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const show = window.scrollY > 20;
+      if (navRef.current !== show) {
+        setScroll(show);
+      }
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleBudgetsDropdown = () => {
     setBudgets(!budgets);
+  };
+
+  const handleVendorsDropdown = () => {
+    setVendors(!vendors);
   };
 
   const handleInventoryDropdown = () => {
@@ -301,7 +324,11 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
               <Avatar />
             </ListItemAvatar>
 
-            <ListItemText primary="John Doe" />
+            <ListItemText
+              primary={
+                user && user.authUser.firstname + " " + user.authUser.lastname
+              }
+            />
           </ListItem>
         </List>
 
@@ -315,12 +342,33 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={handleVendorsDropdown}>
             <ListItemIcon>
               <Icon className="fas fa-user-tie" style={{ color: "#fff" }} />
             </ListItemIcon>
             <ListItemText primary="Vendors" />
+            {vendors ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+          <Collapse in={vendors} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem
+                button
+                className={classes.nested}
+                onClick={() => handleRoute("/vendor/add")}
+              >
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>AV</>
+                </ListItemIcon>
+                <ListItemText primary="Add Vendor" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>QR</>
+                </ListItemIcon>
+                <ListItemText primary="Quotation Request" />
+              </ListItem>
+            </List>
+          </Collapse>
           <ListItem button onClick={handleBudgetsDropdown}>
             <ListItemIcon>
               <AccountBalanceIcon />
@@ -544,14 +592,17 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
       <AppBar
         position="fixed"
         className={classes.appBar}
-        // color={!auth ? "inherit" : "primary"}
+        // color={user && "inherit"}
         color="inherit"
         style={{
           width: navwidth ? "100%" : "",
-          backgroundColor: !user ? "transparent" : ""
+          backgroundColor: scroll
+            ? theme.palette.background.paper
+            : "transparent",
           // boxShadow: auth && "none"
+          transition: "all ease 1s"
         }}
-        elevation={user ? 3 : 0}
+        elevation={user || scroll ? 3 : 0}
       >
         <Toolbar>
           {token && (

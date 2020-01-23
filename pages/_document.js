@@ -46,6 +46,10 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Quicksand&display=swap"
             rel="stylesheet"
           ></link>
+          <link
+            href="https://fonts.googleapis.com/css?family=Rubik&display=swap"
+            rel="stylesheet"
+          ></link>
           {/* <link rel="stylesheet" type="text/css" href="/nprogress.css" /> */}
           <link rel="stylesheet" type="text/css" href="/style.css" />
           <link rel="stylesheet" href="/perfect-scroll.css" />
