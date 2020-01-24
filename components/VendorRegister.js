@@ -110,7 +110,7 @@ export default function VendorRegister() {
   return (
     <div className={classes.root}>
       <div className={classes.center}>
-        <Card className={classes.card}>
+        <Card className={classes.card} elevation={5}>
           <CardHeader
             title={
               <Typography
@@ -142,7 +142,8 @@ export default function VendorRegister() {
                   orientation="vertical"
                   variant="outlined"
                   style={{
-                    backgroundColor: "transparent"
+                    backgroundColor: "transparent",
+                    textAlign: "start"
                   }}
                 >
                   <Step>
@@ -245,7 +246,7 @@ export default function VendorRegister() {
                       />
                     }
                     label={
-                      <span>
+                      <span style={{ fontFamily: "Rubik" }}>
                         I agree to RSEDGE's{" "}
                         <Link href="/vendor/register">
                           <a style={{ color: theme.palette.secondary.light }}>
@@ -264,6 +265,10 @@ export default function VendorRegister() {
                   color="secondary"
                   size="large"
                   disabled={isValidated}
+                  style={{
+                    cursor: isValidated ? "not-allowed" : "pointer",
+                    pointerEvents: "all"
+                  }}
                 >
                   <span>Submit</span>
                 </Button>

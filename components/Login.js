@@ -137,6 +137,13 @@ export default function Login() {
               type="submit"
               size="large"
               disabled={!(state.email && state.password) || loading}
+              style={{
+                cursor:
+                  !(state.email && state.password) || loading
+                    ? "not-allowed"
+                    : "pointer",
+                pointerEvents: "all"
+              }}
             >
               {loading ? <span>Loading...</span> : <span>Login</span>}
             </Button>

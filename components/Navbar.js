@@ -135,7 +135,7 @@ const useStyles = makeStyles(theme => ({
     // color: "#000",
     transition: "all 300ms ease",
     "&:hover": {
-      color: "#333"
+      color: theme.palette.type === "light" ? "#333" : ""
     }
   }
 }));
@@ -600,7 +600,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
             ? theme.palette.background.paper
             : "transparent",
           // boxShadow: auth && "none"
-          transition: "all ease 1s"
+          transition: "all ease 300ms"
         }}
         elevation={user || scroll ? 3 : 0}
       >
