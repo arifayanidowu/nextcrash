@@ -3,13 +3,13 @@ import { makeStyles } from "@material-ui/styles";
 import { Typography, Button } from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { useRouter } from "next/router";
+import ScrollAnimation from "react-animate-on-scroll";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     height: "100vh",
-    // backgroundImage: "url(/bg-pattern.png)",
-    backgroundImage: "url(/dots2.png)",
+    backgroundImage: "url(/landing.png)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "rgba(0,0,0,0.75)"
   },
   text: {
-    // color: theme.palette.background.paper,
+    color: "#424242",
     marginBottom: theme.spacing(4),
     textTransform: "uppercase",
     fontWeight: 600
@@ -88,32 +88,28 @@ export default function Landing() {
   const router = useRouter();
   return (
     <div className={classes.root}>
-      {/* <div className={classes.overlay} /> */}
       <div className={classes.center}>
-        <Typography className={classes.text} variant="h3" gutterBottom>
-          Welcome to Russelsmith Edge
-        </Typography>
-
-        <Typography className={classes.text}>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae, rem!
-        </Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.iconAnimate}
-          onClick={() => router.push("/login")}
-        >
-          Get Started <ChevronRightIcon className={classes.icon} />
-        </Button>
-      </div>
-      <div>
-        <img
-          className={classes.ball}
-          width="100px"
-          height="150px"
-          src="/ghost.png"
-          alt="ball"
-        />
+        <ScrollAnimation animateIn="fadeInUp" delay={3}>
+          <Typography className={classes.text} variant="h3" gutterBottom>
+            Welcome to Russelsmith Edge
+          </Typography>
+        </ScrollAnimation>
+        <ScrollAnimation animateIn="fadeInUp" delay={4}>
+          <Typography className={classes.text}>
+            An Enterprise Resource Planning Software, designed to deliver
+            Quality, reliable, automated solution, faster than ever before.
+          </Typography>
+        </ScrollAnimation>
+        <ScrollAnimation animateIn="fadeInUp" delay={4}>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.iconAnimate}
+            onClick={() => router.push("/login")}
+          >
+            Get Started <ChevronRightIcon className={classes.icon} />
+          </Button>
+        </ScrollAnimation>
       </div>
     </div>
   );

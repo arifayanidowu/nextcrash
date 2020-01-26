@@ -142,6 +142,11 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       color: theme.palette.type === "light" ? "#333" : ""
     }
+  },
+  login: {
+    [theme.breakpoints.down("sm")]: {
+      color: theme.palette.common.black
+    }
   }
 }));
 
@@ -675,10 +680,17 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
                 // size="large"
                 style={{
                   fontWeight: "bold",
-                  border: "2px solid #4791db",
+                  border: `2px solid ${theme.palette.secondary.light}`,
                   borderRadius: 50,
-                  width: 100
+                  width: 100,
+                  color: scroll
+                    ? "#fefefe"
+                    : router.pathname === "/"
+                    ? "#fff"
+                    : "",
+                  backgroundColor: theme.palette.secondary.light
                 }}
+                className={classes.login}
               >
                 Login
               </Button>
