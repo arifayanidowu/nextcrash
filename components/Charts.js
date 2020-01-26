@@ -174,7 +174,7 @@ export function PieComponent() {
 
   return (
     <div>
-      <PieChart width={400} height={400}>
+      <PieChart width={400} height={400} style={{ margin: "auto" }}>
         <Pie
           activeIndex={state.activeIndex}
           activeShape={renderActiveShape}
