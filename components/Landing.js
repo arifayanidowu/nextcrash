@@ -97,7 +97,8 @@ export default function Landing() {
         <ScrollAnimation animateIn="fadeInUp" delay={4}>
           <Typography className={classes.text}>
             An Enterprise Resource Planning Software, designed to deliver
-            Quality, reliable, automated solution, faster than ever before.
+            Quality, automated, reliable, seamless solution, faster than ever
+            before.
           </Typography>
         </ScrollAnimation>
         <ScrollAnimation animateIn="fadeInUp" delay={4}>
