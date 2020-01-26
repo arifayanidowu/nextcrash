@@ -8,7 +8,9 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: "url(/pattern.png)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    backgroundPosition: "center"
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+    overflowX: "hidden"
   }
 }));
 
