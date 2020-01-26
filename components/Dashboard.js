@@ -54,6 +54,7 @@ export default function Dashboard({ user }) {
       >
         analytics
       </Typography>
+
       <Grid container spacing={3} className={classes.grid}>
         <Grid item xs={12} md={12}>
           <Paper elevation={1} className={classes.flex}>

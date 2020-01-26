@@ -530,7 +530,7 @@ export default function Add() {
                     Individual Reference:
                   </Typography>
                 </Grid>
-                <Grid item md={6} sm={12}>
+                <Grid item md={6} xs={12}>
                   <TextField
                     required
                     id="ref_name"
@@ -542,7 +542,7 @@ export default function Add() {
                     className={classes.textField}
                   />
                 </Grid>
-                <Grid item md={6} sm={12}>
+                <Grid item md={6} xs={12}>
                   <TextField
                     required
                     id="ref_address"
@@ -554,7 +554,7 @@ export default function Add() {
                     className={classes.textField}
                   />
                 </Grid>
-                <Grid item md={6} sm={12}>
+                <Grid item md={6} xs={12}>
                   <TextField
                     required
                     id="ref_email"
@@ -566,7 +566,7 @@ export default function Add() {
                     className={classes.textField}
                   />
                 </Grid>
-                <Grid item md={6} sm={12}>
+                <Grid item md={6} xs={12}>
                   <TextField
                     required
                     id="ref_phone"
