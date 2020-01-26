@@ -683,11 +683,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
                   border: `2px solid ${theme.palette.secondary.light}`,
                   borderRadius: 50,
                   width: 100,
-                  color: scroll
-                    ? "#fefefe"
-                    : router.pathname === "/"
-                    ? "#fff"
-                    : "",
+                  color: scroll ? "#fefefe" : "#fff",
                   backgroundColor: theme.palette.secondary.light
                 }}
                 className={classes.login}
