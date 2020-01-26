@@ -12,6 +12,7 @@ import Link from "next/link";
 import { LOGIN } from "../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { handleLogin } from "../utils/auth";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -145,7 +146,20 @@ export default function Login() {
                 pointerEvents: "all"
               }}
             >
-              {loading ? <span>Loading...</span> : <span>Login</span>}
+              {loading ? (
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  Loading...
+                  <CircularProgress size={20} />
+                </span>
+              ) : (
+                <span>Login</span>
+              )}
             </Button>
           </form>
           <Grid

@@ -1,5 +1,5 @@
 import App from "next/app";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -15,6 +15,8 @@ import client from "../connect";
 import { parseCookies } from "nookies";
 import { redirectUser } from "../utils/auth";
 import baseUrl from "../utils/baseUrl";
+import CookieComponent from "../components/CookieComponent";
+import Cookie from "js-cookie";
 
 const useDarkMode = () => {
   const [theme, setTheme] = useState(themeConfig);
@@ -40,6 +42,27 @@ const useDarkMode = () => {
 function MyApp({ Component, pageProps }) {
   const [theme, toggleDarkMode] = useDarkMode();
   const themeConfig = createMuiTheme(theme);
+  const [privacy, setPrivacy] = useState(false);
+  const privacyToken = Cookie.get("privacyToken");
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    if (privacyToken) {
+      setPrivacy(false);
+    } else {
+      setPrivacy(true);
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  });
+
+  const handleSetCookie = () => {
+    Cookie.set("privacyToken", "Accepted", { expires: 1 });
+    setPrivacy(false);
+  };
 
   return (
     <ApolloProvider client={client}>
@@ -49,6 +72,7 @@ function MyApp({ Component, pageProps }) {
         <Layout toggleDarkMode={toggleDarkMode} {...pageProps}>
           <Component {...pageProps} toggleDarkMode={toggleDarkMode} />
         </Layout>
+        <CookieComponent privacy={privacy} handleSetCookie={handleSetCookie} />
       </MuiThemeProvider>
     </ApolloProvider>
   );
@@ -63,7 +87,19 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     pageProps = await Component.getInitialProps(ctx);
   }
 
-  if (token) {
+  if (!token) {
+    const isProtectedRoute =
+      ctx.pathname === "/vendor/add" ||
+      ctx.pathname === "/users" ||
+      ctx.pathname === "/users/create" ||
+      ctx.pathname === "/notifications";
+
+    if (isProtectedRoute) {
+      redirectUser(ctx, "/login");
+    }
+
+    pageProps.user = null;
+  } else {
     pageProps.token = token;
 
     const res = await axios({
@@ -81,6 +117,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
                 division
                 subdivision
                 phone
+                online
               }
             }
         
@@ -92,8 +129,6 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     });
 
     pageProps.user = await res.data.data;
-  } else {
-    pageProps.user = null;
   }
   return {
     pageProps

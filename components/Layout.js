@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import Navbar from "./Navbar";
 import { makeStyles } from "@material-ui/styles";
+import CookieComponent from "./CookieComponent";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(6),
     marginTop: 40
   },
   content2: {
@@ -45,6 +46,7 @@ export default function Layout({ children, toggleDarkMode, token, user }) {
           {children}
         </div>
       </Navbar>
+      {/* <CookieComponent /> */}
     </>
   );
 }

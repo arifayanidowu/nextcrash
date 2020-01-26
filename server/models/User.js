@@ -57,6 +57,18 @@ const UserSchema = new Schema(
       type: String,
       default: "user",
       enum: ["root", "user", "admin"]
+    },
+    authyId: {
+      type: String
+    },
+    verified: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    online: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

@@ -110,8 +110,8 @@ export default function Landing() {
         <img
           className={classes.ball}
           width="100px"
-          height="100px"
-          src="/magnet.png"
+          height="150px"
+          src="/ghost.png"
           alt="ball"
         />
       </div>

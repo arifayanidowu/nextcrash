@@ -71,6 +71,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     margin: "auto",
     marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     padding: theme.spacing(4)
   },
   textField: {

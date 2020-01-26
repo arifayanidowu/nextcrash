@@ -14,7 +14,12 @@ import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme, fade } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  useTheme,
+  fade,
+  withStyles
+} from "@material-ui/core/styles";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import {
@@ -50,7 +55,8 @@ const drawerWidth = 260;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    position: "relative"
   },
   container: {
     position: "relative",
@@ -133,12 +139,40 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 900,
     cursor: "pointer",
     // color: "#000",
-    transition: "all 300ms ease",
     "&:hover": {
       color: theme.palette.type === "light" ? "#333" : ""
     }
   }
 }));
+
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""'
+    }
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0
+    }
+  }
+}))(Badge);
 
 function Navbar({ container, children, toggleDarkMode, token, user }) {
   const classes = useStyles();
@@ -321,7 +355,16 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
         <List className={(classes.toolbar, classes.toolbar2)}>
           <ListItem>
             <ListItemAvatar>
-              <Avatar />
+              <StyledBadge
+                overlap="circle"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right"
+                }}
+                variant="dot"
+              >
+                <Avatar />
+              </StyledBadge>
             </ListItemAvatar>
 
             <ListItemText
@@ -672,7 +715,16 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
                   onClick={handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <Avatar />
+                  <StyledBadge
+                    overlap="circle"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }}
+                    variant="dot"
+                  >
+                    <Avatar />
+                  </StyledBadge>
                 </IconButton>
                 <Tooltip title="Logout">
                   <IconButton

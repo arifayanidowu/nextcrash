@@ -11,6 +11,7 @@ export const GET_USERS = gql`
       division
       subdivision
       phone
+      online
     }
   }
 `;
@@ -26,6 +27,7 @@ export const AUTH_USER = gql`
       division
       subdivision
       phone
+      online
     }
   }
 `;

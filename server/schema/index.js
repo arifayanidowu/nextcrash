@@ -21,6 +21,7 @@ const typeDefs = gql`
     subdivision: String
     role: String
     password: String
+    online: Boolean
   }
 
   type AuthData {
@@ -114,6 +115,11 @@ const resolvers = {
           let token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1d"
           });
+          await User.findOneAndUpdate(
+            { email: email },
+            { $set: { online: true } },
+            { new: true }
+          );
           return { token };
         }
       } catch (error) {
