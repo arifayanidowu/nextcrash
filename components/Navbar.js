@@ -45,6 +45,7 @@ import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import { useRouter } from "next/router";
 
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -741,11 +742,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
                     color="inherit"
                     onClick={onLogout}
                   >
-                    {theme.palette.type === "light" ? (
-                      <img src="/logout2.png" alt="logout2" />
-                    ) : (
-                      <img src="/logout.png" alt="logout" />
-                    )}
+                    <PowerSettingsNewIcon />
                   </IconButton>
                 </Tooltip>
               </div>
