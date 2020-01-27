@@ -41,6 +41,12 @@ const useStyles = makeStyles(theme => ({
     textTransform: "uppercase",
     fontWeight: 600
   },
+  header: {
+    marginBottom: theme.spacing(4),
+    textTransform: "uppercase",
+    fontWeight: 600,
+    fontFamily: "Rubik"
+  },
   icon: {
     opacity: 1,
     transform: "translateX(0)",
@@ -90,27 +96,25 @@ export default function Landing() {
     <div className={classes.root}>
       <div className={classes.center}>
         <ScrollAnimation animateIn="fadeInUp" delay={3}>
-          <Typography className={classes.text} variant="h3" gutterBottom>
+          <Typography variant="h3" gutterBottom className={classes.header}>
             Welcome to Russelsmith Edge
           </Typography>
         </ScrollAnimation>
         <ScrollAnimation animateIn="fadeInUp" delay={4}>
           <Typography className={classes.text}>
             An Enterprise Resource Planning Software, designed to deliver
-            Quality, automated, reliable, seamless solution, faster than ever
+            Quality, reliable, seamless automated solution, faster than ever
             before.
           </Typography>
         </ScrollAnimation>
-        <ScrollAnimation animateIn="fadeInUp" delay={4}>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.iconAnimate}
-            onClick={() => router.push("/login")}
-          >
-            Get Started <ChevronRightIcon className={classes.icon} />
-          </Button>
-        </ScrollAnimation>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.iconAnimate}
+          onClick={() => router.push("/login")}
+        >
+          Get Started <ChevronRightIcon className={classes.icon} />
+        </Button>
       </div>
     </div>
   );
