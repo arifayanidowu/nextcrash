@@ -101,6 +101,9 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     pageProps.user = null;
   } else {
     pageProps.token = token;
+    if (ctx.pathname === "/login" || ctx.pathname === "/vendor/register") {
+      redirectUser(ctx, "/");
+    }
 
     const res = await axios({
       method: "POST",

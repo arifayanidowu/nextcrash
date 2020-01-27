@@ -149,7 +149,7 @@ export default function VendorRegister() {
                   <Step>
                     <StepLabel>
                       <Typography className={classes.message}>
-                        kindly fill the form fields
+                        kindly fill the form fields with the required details
                       </Typography>
                     </StepLabel>
                   </Step>

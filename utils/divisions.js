@@ -14,7 +14,7 @@ export const subdivisions = [
   { name: "Customer Experience", code: "CUE" },
   { name: "Legal Compliance", code: "LAC" },
   { name: "Business Strategy & Performance", code: "BSP" },
-  { name: "Commercial", code: "COM" },
+  { name: "Commercials", code: "COM" },
   { name: "Marketing", code: "MKT" },
   { name: "Services", code: "SER" },
   { name: "Facilities", code: "FAC" },

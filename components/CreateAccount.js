@@ -12,6 +12,8 @@ import {
   MenuItem
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { countries } from "../utils/countries";
 import { divisions, subdivisions } from "../utils/divisions";
 import { CREATE_USER } from "../queries";
@@ -363,8 +365,37 @@ export default function CreateAccount() {
                 state.eid
               ) || loading
             }
+            style={{
+              cursor:
+                !(
+                  state.division &&
+                  state.phone &&
+                  state.subdivision &&
+                  state.lastname &&
+                  state.firstname &&
+                  state.email &&
+                  code &&
+                  state.eid
+                ) || loading
+                  ? "not-allowed"
+                  : "pointer",
+              pointerEvents: "all"
+            }}
           >
-            {loading ? <span>Loading...</span> : <span>Submit</span>}
+            {loading ? (
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                Loading...
+                <CircularProgress size={20} />
+              </span>
+            ) : (
+              <span>Submit</span>
+            )}
           </Button>
         </form>
       </Card>

@@ -86,7 +86,13 @@ export default function Dashboard({ user }) {
         </Grid>
       </Grid>
 
-      <Grid container spacing={3} className={classes.grid}>
+      <Grid
+        container
+        spacing={3}
+        className={classes.grid}
+        alignContent="center"
+        justify="center"
+      >
         <Grid item xs={12} md={6}>
           <Card>
             <CardHeader
