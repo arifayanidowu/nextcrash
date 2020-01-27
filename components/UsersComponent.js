@@ -15,6 +15,10 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import { Typography } from "@material-ui/core";
+import { useQuery } from "@apollo/react-hooks";
+import { GET_USERS } from "../queries";
+import Loader from "./Loader";
 
 const useStyles1 = makeStyles(theme => ({
   root: {
@@ -119,10 +123,12 @@ const useStyles2 = makeStyles({
   }
 });
 
-export default function CustomPaginationActionsTable() {
+export default function UsersComponent() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { loading, error, data } = useQuery(GET_USERS, { errorPolicy: "all" });
+  const theme = useTheme();
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -136,55 +142,87 @@ export default function CustomPaginationActionsTable() {
     setPage(0);
   };
 
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="custom pagination table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map(row => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-            </TableRow>
-          ))}
+  if (loading) {
+    return <Loader />;
+  }
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+  if (error) {
+    return (
+      <Typography variant="h5" color="error">
+        Failed to fetch Data...
+      </Typography>
+    );
+  }
+
+  return (
+    <div>
+      <Typography align="center" style={{ fontFamily: "Rubik" }} variant="h3">
+        Users List
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="custom pagination table">
+          <TableHead style={{ backgroundColor: theme.palette.primary.light }}>
+            <TableRow>
+              <TableCell style={{ color: theme.palette.common.white }}>
+                Firstname
+              </TableCell>
+              <TableCell
+                align="right"
+                style={{ color: theme.palette.common.white }}
+              >
+                Lastname
+              </TableCell>
+              <TableCell
+                align="right"
+                style={{ color: theme.palette.common.white }}
+              >
+                Subdivision
+              </TableCell>
             </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
-                native: true
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? data.users.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : data.users
+            ).map(row => (
+              <TableRow key={row.id}>
+                <TableCell component="th" scope="row">
+                  {row.firstname}
+                </TableCell>
+                <TableCell align="right">{row.lastname}</TableCell>
+                <TableCell align="right">{row.subdivision}</TableCell>
+              </TableRow>
+            ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={data.users.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
