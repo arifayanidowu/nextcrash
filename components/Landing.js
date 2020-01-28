@@ -111,7 +111,7 @@ export default function Landing() {
           variant="contained"
           color="secondary"
           className={classes.iconAnimate}
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/vendor/register")}
         >
           Get Started <ChevronRightIcon className={classes.icon} />
         </Button>

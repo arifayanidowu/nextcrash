@@ -117,7 +117,11 @@ export default function VendorRegister() {
                 align="center"
                 variant="h5"
                 gutterBottom
-                style={{ marginBottom: 25 }}
+                style={{
+                  marginBottom: 25,
+                  fontFamily: "Rubik",
+                  fontWeight: 900
+                }}
               >
                 NEW VENDOR REGISTRATION
               </Typography>
@@ -250,7 +254,13 @@ export default function VendorRegister() {
                         I agree to RSEDGE's{" "}
                         <Link href="/vendor/register">
                           <a style={{ color: theme.palette.secondary.light }}>
-                            Terms of Use &amp; Privacy Policy
+                            Terms of Use
+                          </a>
+                        </Link>{" "}
+                        &amp;{" "}
+                        <Link href="/vendor/register">
+                          <a style={{ color: theme.palette.secondary.light }}>
+                            Privacy Policy
                           </a>
                         </Link>
                       </span>

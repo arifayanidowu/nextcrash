@@ -2,6 +2,7 @@ import React from "react";
 import Landing from "../components/Landing";
 import Dashboard from "../components/Dashboard";
 import Policy from "../components/Policy";
+import Footer from "../components/Footer";
 
 const Home = ({ toggleDarkMode, token, user }) => {
   return (
@@ -10,6 +11,7 @@ const Home = ({ toggleDarkMode, token, user }) => {
         <>
           <Landing />
           <Policy />
+          <Footer />
         </>
       ) : (
         <Dashboard toggleDarkMode={toggleDarkMode} user={user} />

@@ -6,7 +6,8 @@ import {
   CardContent,
   Typography,
   Button,
-  CardMedia
+  CardMedia,
+  Divider
 } from "@material-ui/core";
 import { useRouter } from "next/router";
 import ScrollAnimation from "react-animate-on-scroll";
@@ -16,7 +17,8 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     height: "100%",
     minHeight: 800,
-    backgroundImage: "url(/people.jpg)",
+    // backgroundImage: "url(/people.jpg)",
+    backgroundImage: "url(/sunny.png)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -35,6 +37,13 @@ const useStyles = makeStyles(theme => ({
   cardContent: {
     backgroundColor: "#eeeeee",
     height: "100%"
+  },
+  divider: {
+    width: 100,
+    border: "3px solid #fff",
+    borderRadius: 50,
+    background: "#fff",
+    margin: "auto"
   }
 }));
 
@@ -52,6 +61,7 @@ export default function Policy() {
       >
         WHO WE ARE
       </Typography>
+      <Divider variant="middle" className={classes.divider} />
       <Grid
         container
         spacing={3}

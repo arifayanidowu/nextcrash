@@ -87,7 +87,8 @@ const useStyles = makeStyles(theme => ({
   toolbar2: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(0.1),
-    backgroundColor: "#232f3e"
+    backgroundColor: "#232f3e",
+    overflow: "hidden"
   },
   drawerPaper: {
     width: drawerWidth,
@@ -574,6 +575,12 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
                   <>RV</>
                 </ListItemIcon>
                 <ListItemText primary="Reviewers" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon style={{ color: theme.palette.secondary.icon }}>
+                  <>PM</>
+                </ListItemIcon>
+                <ListItemText primary="Permissions" />
               </ListItem>
             </List>
           </Collapse>
