@@ -30,7 +30,7 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
-    user: User
+    user(id: String): User
     authUser: User
   }
 
@@ -46,6 +46,17 @@ const typeDefs = gql`
       eid: String!
     ): User
     login(email: String, password: String): AuthData
+    editUser(
+      id: String
+      email: String!
+      firstname: String!
+      lastname: String!
+      code: String!
+      division: String!
+      subdivision: String!
+      phone: String!
+      eid: String!
+    ): User
   }
 `;
 
@@ -55,6 +66,15 @@ const resolvers = {
       try {
         const users = await User.find({});
         return users;
+      } catch (error) {
+        throw new ApolloError(error);
+      }
+    },
+
+    user: async (_, { id }, { User }) => {
+      try {
+        const user = await User.findOne({ _id: id });
+        return user;
       } catch (error) {
         throw new ApolloError(error);
       }
@@ -98,6 +118,43 @@ const resolvers = {
         user.subdivision = subdivision;
         user.phone = phone;
         return user.save();
+      } catch (error) {
+        throw new ApolloError(error);
+      }
+    },
+    editUser: async (
+      _,
+      {
+        id,
+        email,
+        firstname,
+        lastname,
+        code,
+        eid,
+        division,
+        subdivision,
+        phone
+      },
+      { User }
+    ) => {
+      try {
+        const user = await User.findOneAndUpdate(
+          { _id: id },
+          {
+            $set: {
+              email,
+              firstname,
+              lastname,
+              code,
+              eid,
+              division,
+              subdivision,
+              phone
+            }
+          },
+          { new: true }
+        );
+        return user;
       } catch (error) {
         throw new ApolloError(error);
       }

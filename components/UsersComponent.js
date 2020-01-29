@@ -14,6 +14,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { GET_USERS } from "../queries";
 import Loader from "./Loader";
 import SearchComponent from "./SearchComponent";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 
 export default function UsersComponent() {
   const classes = useStyles();
+  const router = useRouter();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { loading, error, data } = useQuery(GET_USERS, { errorPolicy: "all" });
@@ -140,7 +142,12 @@ export default function UsersComponent() {
 
                       <TableCell align="center">{row.subdivision}</TableCell>
                       <TableCell align="center">
-                        <IconButton color="primary">
+                        <IconButton
+                          color="primary"
+                          onClick={() =>
+                            router.push(`/users/edit?id=${row.id}`)
+                          }
+                        >
                           <EditIcon color="primary" />
                         </IconButton>
                       </TableCell>
