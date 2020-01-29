@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     backgroundPosition: "50% 80%",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed",
     position: "relative",
     overflow: "hidden"
   },
@@ -18,17 +19,18 @@ const useStyles = makeStyles(theme => ({
     textTransform: "uppercase",
     marginTop: 80,
     marginLeft: "auto",
-    marginRight: "auto"
+    marginRight: "auto",
+    borderRadius: "50%"
   },
   footer: {
-    marginTop: 100,
+    marginTop: 80,
     textAlign: "center",
     justifyContent: "center",
     alignContent: "center",
     display: "flex",
 
     "& > *": {
-      color: theme.palette.common.black,
+      color: theme.palette.common.white,
       marginRight: 10
     }
   },
@@ -50,7 +52,7 @@ export default function Footer() {
   return (
     <div className={classes.root}>
       <div className={classes.center}>
-        <img src="/arrow.png" width="200" className={classes.logo} />
+        <img src="/gelly.png" width="80" className={classes.logo} />
       </div>
 
       <div className={classes.footer}>

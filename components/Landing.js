@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
     // backgroundColor: "#000",
     position: "relative",
     overflow: "hidden",
-    backgroundAttachment: "fixed"
+    backgroundAttachment: "fixed",
+    color: theme.palette.background.paper
   },
   center: {
     position: "absolute",
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "rgba(0,0,0,0.75)"
   },
   text: {
-    color: "#424242",
+    // color: "#424242",
     marginBottom: theme.spacing(4),
     textTransform: "uppercase",
     fontWeight: 600

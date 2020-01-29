@@ -669,7 +669,20 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
           )}
 
           <Link href="/">
-            <Typography variant="h6" className={classes.logo}>
+            <Typography
+              variant="h6"
+              className={classes.logo}
+              style={{
+                color:
+                  !token && router.pathname === "/" && scroll
+                    ? theme.palette.common.black
+                    : router.pathname !== "/"
+                    ? theme.palette.common.black
+                    : token
+                    ? theme.palette.common.black
+                    : "#fff"
+              }}
+            >
               RSEDGE
             </Typography>
           </Link>
