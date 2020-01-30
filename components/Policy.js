@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
     // backgroundRepeat: "no-repeat",
     // backgroundSize: "cover",
     // backgroundPosition: "center",
-    backgroundAttachment: "fixed",
-    backgroundColor: "#1a1f2b",
+    // backgroundAttachment: "fixed",
+    // backgroundColor: "#1a1f2b",
     padding: theme.spacing(6),
     position: "relative"
   },
@@ -40,10 +40,10 @@ const useStyles = makeStyles(theme => ({
     height: "100%"
   },
   divider: {
-    width: 100,
-    border: "3px solid #fff",
-    borderRadius: 50,
-    background: "#fff",
+    width: 10,
+    height: 10,
+    borderRadius: "50%",
+    background: theme.palette.secondary.light,
     margin: "auto"
   }
 }));
@@ -58,7 +58,7 @@ export default function Policy() {
         align="center"
         style={{ fontFamily: "Rubik", color: "#4D444", color: "#fefefe" }}
         variant="h3"
-        gutterBottom
+        // gutterBottom
       >
         WHO WE ARE
       </Typography>
