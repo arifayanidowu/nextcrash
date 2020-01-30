@@ -14,6 +14,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import {
   makeStyles,
   useTheme,
@@ -387,6 +388,12 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <AssignmentIndIcon />
+            </ListItemIcon>
+            <ListItemText primary="Vendors List" />
+          </ListItem>
           <ListItem button onClick={handleVendorsDropdown}>
             <ListItemIcon>
               <Icon className="fas fa-user-tie" style={{ color: "#fff" }} />
@@ -673,7 +680,12 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
               variant="h6"
               className={classes.logo}
               style={{
-                color: !token && scroll ? theme.palette.common.black : "#fff"
+                color:
+                  !token && scroll
+                    ? theme.palette.common.black
+                    : token
+                    ? theme.palette.common.black
+                    : "#fff"
               }}
             >
               RSEDGE

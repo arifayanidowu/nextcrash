@@ -8,7 +8,7 @@ import ScrollAnimation from "react-animate-on-scroll";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    height: "100vh",
+    height: "80vh",
     backgroundImage: "url(/landing.png)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
