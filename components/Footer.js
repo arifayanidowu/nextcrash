@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   divider: {
-    background: "#eeeeee",
+    background: "#172837",
     margin: "auto",
     marginTop: -50,
     zIndex: -1,

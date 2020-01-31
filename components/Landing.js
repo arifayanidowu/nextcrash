@@ -16,8 +16,9 @@ const useStyles = makeStyles(theme => ({
     // backgroundColor: "#000",
     position: "relative",
     overflow: "hidden",
-    backgroundAttachment: "fixed",
-    color: theme.palette.background.paper
+    // backgroundAttachment: "fixed",
+    color: theme.palette.background.paper,
+    zIndex: 2
   },
   center: {
     position: "absolute",

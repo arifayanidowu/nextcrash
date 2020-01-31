@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     backgroundPosition: "50% 80%",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat"
+    // marginTop: -10
     // backgroundAttachment: "fixed"
   }
 }));
