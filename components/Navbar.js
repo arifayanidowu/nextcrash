@@ -277,8 +277,8 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
   };
 
   const onLogout = () => {
+    handleMobileMenuClose();
     handleLogout();
-    setMobileMoreAnchorEl(null);
   };
 
   const menuId = "primary-search-account-menu";
@@ -339,7 +339,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
-      <MenuItem button onClick={handleLogout}>
+      <MenuItem button onClick={onLogout}>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
