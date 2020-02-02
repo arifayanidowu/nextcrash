@@ -141,7 +141,7 @@ const useStyles = makeStyles(theme => ({
   logo: {
     fontWeight: 900,
     cursor: "pointer",
-    // color: "#000",
+    color: theme.palette.common.black,
     "&:hover": {
       color: theme.palette.type === "light" ? "#333" : ""
     }
@@ -372,7 +372,13 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
 
             <ListItemText
               primary={
-                user && user.authUser.firstname + " " + user.authUser.lastname
+                user && (
+                  <Link href="/">
+                    <a style={{ color: theme.palette.common.white }}>
+                      {user.authUser.firstname + " " + user.authUser.lastname}
+                    </a>
+                  </Link>
+                )
               }
             />
           </ListItem>
@@ -657,6 +663,11 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
           backgroundColor: scroll
             ? theme.palette.background.paper
             : "transparent",
+          // backgroundColor: scroll
+          //   ? theme.palette.background.paper
+          //   : !token
+          //   ? "transparent"
+          //   : "#fefefe",
           // boxShadow: auth && "none"
           transition: "all ease 300ms"
         }}
@@ -681,38 +692,20 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
               className={classes.logo}
               style={{
                 color:
-                  !token && scroll
+                  token || scroll
                     ? theme.palette.common.black
-                    : token
+                    : router.pathname === "/terms" ||
+                      router.pathname === "/privacy"
                     ? theme.palette.common.black
-                    : "#fff"
+                    : theme.palette.common.white
               }}
             >
-              RSEDGE
+              RS EDGE
             </Typography>
           </Link>
           <div className={classes.grow} />
 
-          {!token ? (
-            <div>
-              <Button
-                // style={{ color: theme.palette.background.paper }}
-                onClick={() => router.push("/login")}
-                // size="large"
-                style={{
-                  fontWeight: "bold",
-                  border: `2px solid ${theme.palette.secondary.light}`,
-                  borderRadius: 50,
-                  width: 100,
-                  color: scroll ? "#fefefe" : "#fff",
-                  backgroundColor: theme.palette.secondary.light
-                }}
-                className={classes.login}
-              >
-                Login
-              </Button>
-            </div>
-          ) : (
+          {token && (
             <>
               <div className={classes.sectionDesktop}>
                 <Tooltip title="toggle light/dark theme">

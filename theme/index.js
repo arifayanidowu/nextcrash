@@ -3,8 +3,8 @@ const themeConfig = {
     useNextVariants: true,
     suppressDeprecationWarnings: true,
     fontFamily: [
-      "Quicksand",
       "Rubik",
+      "Quicksand",
       "-apple-system",
       "BlinkMacSystemFont",
       '"Segoe UI"',

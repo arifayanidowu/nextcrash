@@ -16,8 +16,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { countries } from "../utils/countries";
 import { divisions, subdivisions } from "../utils/divisions";
-import { CREATE_USER } from "../queries";
+import { CREATE_USER, GET_USERS } from "../queries";
 import { useMutation } from "@apollo/react-hooks";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -79,7 +80,14 @@ export default function CreateAccount() {
   const [code, setCode] = useState(null);
   const [state, setState] = useState(INIT_STATE);
   const [age, setAge] = useState("");
-  const [addUser] = useMutation(CREATE_USER);
+  const [addUser] = useMutation(CREATE_USER, {
+    refetchQueries: [
+      {
+        query: GET_USERS
+      }
+    ]
+  });
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -131,6 +139,9 @@ export default function CreateAccount() {
         setState(INIT_STATE);
         setCode(null);
         setLoading(false);
+        setTimeout(() => {
+          router.push("/users");
+        }, 1000);
       })
       .catch(err => {
         console.error(err);

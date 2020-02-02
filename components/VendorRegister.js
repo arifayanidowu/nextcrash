@@ -49,7 +49,8 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(8)
   },
   form: {
-    padding: theme.spacing(4)
+    padding: theme.spacing(4),
+    marginTop: theme.spacing(6)
   },
   info: {
     padding: theme.spacing(4)
@@ -252,13 +253,13 @@ export default function VendorRegister() {
                     label={
                       <span style={{ fontFamily: "Rubik" }}>
                         I agree to RSEDGE's{" "}
-                        <Link href="/vendor/register">
+                        <Link href="/terms">
                           <a style={{ color: theme.palette.secondary.light }}>
                             Terms of Use
                           </a>
                         </Link>{" "}
                         &amp;{" "}
-                        <Link href="/vendor/register">
+                        <Link href="/privacy">
                           <a style={{ color: theme.palette.secondary.light }}>
                             Privacy Policy
                           </a>

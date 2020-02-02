@@ -27,11 +27,12 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     minWidth: 275,
-    width: "70%",
+    width: "50%",
     margin: "auto",
     padding: theme.spacing(8),
     [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(3)
+      padding: theme.spacing(3),
+      width: "80%"
     }
   },
   overlay: {

@@ -19,5 +19,5 @@ export function handleLogin(token) {
 
 export function handleLogout() {
   Cookie.remove("token");
-  Router.push("/login");
+  Router.push("/");
 }

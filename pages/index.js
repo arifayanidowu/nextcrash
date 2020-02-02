@@ -3,6 +3,8 @@ import Landing from "../components/Landing";
 import Dashboard from "../components/Dashboard";
 import Policy from "../components/Policy";
 import Footer from "../components/Footer";
+import Login from "../components/Login";
+
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -22,14 +24,18 @@ const Home = ({ toggleDarkMode, token, user }) => {
     <div>
       {!token ? (
         <>
-          <Landing />
+          {/* <Landing />
           <div className={classes.bgColor}>
             <Policy />
             <Footer />
-          </div>
+          </div> */}
+          <Login />
         </>
       ) : (
-        <Dashboard toggleDarkMode={toggleDarkMode} user={user} />
+        <>
+          <title>RS EDGE | Dashboard</title>
+          <Dashboard toggleDarkMode={toggleDarkMode} user={user} />
+        </>
       )}
     </div>
   );

@@ -1,193 +1,371 @@
 import React, { useState } from "react";
-
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Sector
-} from "recharts";
+import { ResponsiveBar } from "@nivo/bar";
+import { ResponsivePie } from "@nivo/pie";
 
 const data = [
   {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
+    country: "AD",
+    "hot dog": 117,
+    "hot dogColor": "hsl(51, 70%, 50%)",
+    burger: 78,
+    burgerColor: "hsl(103, 70%, 50%)",
+    sandwich: 187,
+    sandwichColor: "hsl(4, 70%, 50%)",
+    kebab: 176,
+    kebabColor: "hsl(281, 70%, 50%)",
+    fries: 143,
+    friesColor: "hsl(277, 70%, 50%)",
+    donut: 148,
+    donutColor: "hsl(196, 70%, 50%)"
   },
   {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
+    country: "AE",
+    "hot dog": 154,
+    "hot dogColor": "hsl(296, 70%, 50%)",
+    burger: 19,
+    burgerColor: "hsl(311, 70%, 50%)",
+    sandwich: 150,
+    sandwichColor: "hsl(87, 70%, 50%)",
+    kebab: 122,
+    kebabColor: "hsl(177, 70%, 50%)",
+    fries: 174,
+    friesColor: "hsl(253, 70%, 50%)",
+    donut: 124,
+    donutColor: "hsl(68, 70%, 50%)"
   },
   {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
+    country: "AF",
+    "hot dog": 149,
+    "hot dogColor": "hsl(78, 70%, 50%)",
+    burger: 186,
+    burgerColor: "hsl(121, 70%, 50%)",
+    sandwich: 191,
+    sandwichColor: "hsl(7, 70%, 50%)",
+    kebab: 61,
+    kebabColor: "hsl(151, 70%, 50%)",
+    fries: 166,
+    friesColor: "hsl(297, 70%, 50%)",
+    donut: 26,
+    donutColor: "hsl(198, 70%, 50%)"
   },
   {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
+    country: "AG",
+    "hot dog": 39,
+    "hot dogColor": "hsl(165, 70%, 50%)",
+    burger: 29,
+    burgerColor: "hsl(24, 70%, 50%)",
+    sandwich: 200,
+    sandwichColor: "hsl(279, 70%, 50%)",
+    kebab: 128,
+    kebabColor: "hsl(39, 70%, 50%)",
+    fries: 167,
+    friesColor: "hsl(245, 70%, 50%)",
+    donut: 130,
+    donutColor: "hsl(110, 70%, 50%)"
   },
   {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181
+    country: "AI",
+    "hot dog": 28,
+    "hot dogColor": "hsl(330, 70%, 50%)",
+    burger: 47,
+    burgerColor: "hsl(288, 70%, 50%)",
+    sandwich: 54,
+    sandwichColor: "hsl(106, 70%, 50%)",
+    kebab: 97,
+    kebabColor: "hsl(318, 70%, 50%)",
+    fries: 99,
+    friesColor: "hsl(299, 70%, 50%)",
+    donut: 38,
+    donutColor: "hsl(132, 70%, 50%)"
   },
   {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500
+    country: "AL",
+    "hot dog": 178,
+    "hot dogColor": "hsl(291, 70%, 50%)",
+    burger: 46,
+    burgerColor: "hsl(307, 70%, 50%)",
+    sandwich: 194,
+    sandwichColor: "hsl(47, 70%, 50%)",
+    kebab: 19,
+    kebabColor: "hsl(123, 70%, 50%)",
+    fries: 50,
+    friesColor: "hsl(47, 70%, 50%)",
+    donut: 154,
+    donutColor: "hsl(215, 70%, 50%)"
   },
   {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100
+    country: "AM",
+    "hot dog": 86,
+    "hot dogColor": "hsl(100, 70%, 50%)",
+    burger: 8,
+    burgerColor: "hsl(250, 70%, 50%)",
+    sandwich: 6,
+    sandwichColor: "hsl(325, 70%, 50%)",
+    kebab: 132,
+    kebabColor: "hsl(69, 70%, 50%)",
+    fries: 122,
+    friesColor: "hsl(316, 70%, 50%)",
+    donut: 138,
+    donutColor: "hsl(235, 70%, 50%)"
   }
 ];
+
 export default function Charts() {
   return (
     <div style={{ width: "100%", height: 300 }}>
-      <ResponsiveContainer>
-        <AreaChart
-          data={data}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-        </AreaChart>
-      </ResponsiveContainer>
+      <ResponsiveBar
+        data={data}
+        keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
+        indexBy="country"
+        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        padding={0.3}
+        colors={{ scheme: "nivo" }}
+        defs={[
+          {
+            id: "dots",
+            type: "patternDots",
+            background: "inherit",
+            color: "#38bcb2",
+            size: 4,
+            padding: 1,
+            stagger: true
+          },
+          {
+            id: "lines",
+            type: "patternLines",
+            background: "inherit",
+            color: "#eed312",
+            rotation: -45,
+            lineWidth: 6,
+            spacing: 10
+          }
+        ]}
+        fill={[
+          {
+            match: {
+              id: "fries"
+            },
+            id: "dots"
+          },
+          {
+            match: {
+              id: "sandwich"
+            },
+            id: "lines"
+          }
+        ]}
+        borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+        axisTop={null}
+        axisRight={null}
+        axisBottom={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "country",
+          legendPosition: "middle",
+          legendOffset: 32
+        }}
+        axisLeft={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "food",
+          legendPosition: "middle",
+          legendOffset: -40
+        }}
+        labelSkipWidth={12}
+        labelSkipHeight={12}
+        labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+        legends={[
+          {
+            dataFrom: "keys",
+            anchor: "bottom-right",
+            direction: "column",
+            justify: false,
+            translateX: 120,
+            translateY: 0,
+            itemsSpacing: 2,
+            itemWidth: 100,
+            itemHeight: 20,
+            itemDirection: "left-to-right",
+            itemOpacity: 0.85,
+            symbolSize: 20,
+            effects: [
+              {
+                on: "hover",
+                style: {
+                  itemOpacity: 1
+                }
+              }
+            ]
+          }
+        ]}
+        animate={true}
+        motionStiffness={90}
+        motionDamping={15}
+      />
     </div>
   );
 }
 
 const data2 = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 }
+  {
+    id: "hack",
+    label: "hack",
+    value: 266,
+    color: "hsl(97, 70%, 50%)"
+  },
+  {
+    id: "haskell",
+    label: "haskell",
+    value: 468,
+    color: "hsl(238, 70%, 50%)"
+  },
+  {
+    id: "python",
+    label: "python",
+    value: 511,
+    color: "hsl(279, 70%, 50%)"
+  },
+  {
+    id: "erlang",
+    label: "erlang",
+    value: 276,
+    color: "hsl(166, 70%, 50%)"
+  },
+  {
+    id: "rust",
+    label: "rust",
+    value: 399,
+    color: "hsl(212, 70%, 50%)"
+  }
 ];
-
-const renderActiveShape = props => {
-  const RADIAN = Math.PI / 180;
-  const {
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    fill,
-    payload,
-    percent,
-    value
-  } = props;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
-
-  return (
-    <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
-        {payload.name}
-      </text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
-        fill={fill}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-      />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#333"
-      >{`PV ${value}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill="#999"
-      >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
-      </text>
-    </g>
-  );
-};
 
 export function PieComponent() {
   const [state, setState] = useState({
     activeIndex: 0
   });
 
-  const onPieEnter = (data, index) => {
-    setState({
-      activeIndex: index
-    });
-  };
-
   return (
-    <div>
-      <PieChart width={400} height={400} style={{ margin: "auto" }}>
-        <Pie
-          activeIndex={state.activeIndex}
-          activeShape={renderActiveShape}
-          data={data2}
-          cx={200}
-          cy={200}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="value"
-          onMouseEnter={onPieEnter}
-        />
-      </PieChart>
+    <div
+      style={{
+        width: "100%",
+        height: 300
+      }}
+    >
+      <ResponsivePie
+        data={data2}
+        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+        innerRadius={0.5}
+        padAngle={0.7}
+        cornerRadius={3}
+        colors={{ scheme: "nivo" }}
+        borderWidth={1}
+        borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+        radialLabelsSkipAngle={10}
+        radialLabelsTextXOffset={6}
+        radialLabelsTextColor="#333333"
+        radialLabelsLinkOffset={0}
+        radialLabelsLinkDiagonalLength={16}
+        radialLabelsLinkHorizontalLength={24}
+        radialLabelsLinkStrokeWidth={1}
+        radialLabelsLinkColor={{ from: "color" }}
+        slicesLabelsSkipAngle={10}
+        slicesLabelsTextColor="#333333"
+        animate={true}
+        motionStiffness={90}
+        motionDamping={15}
+        defs={[
+          {
+            id: "dots",
+            type: "patternDots",
+            background: "inherit",
+            color: "rgba(255, 255, 255, 0.3)",
+            size: 4,
+            padding: 1,
+            stagger: true
+          },
+          {
+            id: "lines",
+            type: "patternLines",
+            background: "inherit",
+            color: "rgba(255, 255, 255, 0.3)",
+            rotation: -45,
+            lineWidth: 6,
+            spacing: 10
+          }
+        ]}
+        fill={[
+          {
+            match: {
+              id: "ruby"
+            },
+            id: "dots"
+          },
+          {
+            match: {
+              id: "c"
+            },
+            id: "dots"
+          },
+          {
+            match: {
+              id: "go"
+            },
+            id: "dots"
+          },
+          {
+            match: {
+              id: "python"
+            },
+            id: "dots"
+          },
+          {
+            match: {
+              id: "scala"
+            },
+            id: "lines"
+          },
+          {
+            match: {
+              id: "lisp"
+            },
+            id: "lines"
+          },
+          {
+            match: {
+              id: "elixir"
+            },
+            id: "lines"
+          },
+          {
+            match: {
+              id: "javascript"
+            },
+            id: "lines"
+          }
+        ]}
+        legends={[
+          {
+            anchor: "bottom",
+            direction: "row",
+            translateY: 56,
+            itemWidth: 80,
+            itemHeight: 18,
+            itemTextColor: "#999",
+            symbolSize: 18,
+            symbolShape: "circle",
+            effects: [
+              {
+                on: "hover",
+                style: {
+                  itemTextColor: "#000"
+                }
+              }
+            ]
+          }
+        ]}
+      />
     </div>
   );
 }

@@ -69,6 +69,9 @@ const UserSchema = new Schema(
     online: {
       type: Boolean,
       default: false
+    },
+    avatarUrl: {
+      type: String
     }
   },
   { timestamps: true }

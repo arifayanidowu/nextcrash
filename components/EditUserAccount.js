@@ -182,6 +182,9 @@ export default function EditUserAccount() {
         // setCode(null);
         setLoading(false);
         console.log(doc);
+        setTimeout(() => {
+          router.push("/users");
+        }, 1000);
       })
       .catch(err => {
         console.error(err);

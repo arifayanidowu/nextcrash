@@ -12,6 +12,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/styles";
 import { currencyFormat } from "../utils/currencyFormat";
+import CalendarTodayOutlinedIcon from "@material-ui/icons/CalendarTodayOutlined";
 
 import Charts, { PieComponent } from "./Charts";
 
@@ -46,6 +47,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard({ user }) {
   const classes = useStyles();
+  const date = new Date();
   return (
     <div>
       <Typography
@@ -54,6 +56,25 @@ export default function Dashboard({ user }) {
       >
         analytics
       </Typography>
+      <Typography variant="h5" component="h5" gutterBottom>
+        Finance Overview
+      </Typography>
+      <Grid container spacing={3} justify="space-between" alignContent="center">
+        <Grid item xs={8} md={10}></Grid>
+        <Grid item xs={4} md={2}>
+          <Paper elevation={1} style={{ padding: 5 }}>
+            <Typography
+              style={{
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              <CalendarTodayOutlinedIcon style={{ marginRight: 4 }} />
+              {date.getDate()} / {date.getMonth() + 1} / {date.getFullYear()}
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
 
       <Grid container spacing={3} className={classes.grid}>
         <Grid item xs={12} md={12}>

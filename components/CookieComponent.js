@@ -64,12 +64,12 @@ export default function CookieComponent({ privacy, handleSetCookie }) {
             for you. In some cases, they are essential to making the site work
             properly. By accessing this site, you consent to the use of cookies.
             For more information, refer to RSEDGE’s{" "}
-            <Link href="/">
-              <a className={classes.link}> privacy policy</a>
+            <Link href="/terms">
+              <a className={classes.link}>Terms of Use </a>
             </Link>{" "}
             and{" "}
-            <Link href="/">
-              <a className={classes.link}>cookie policy.</a>
+            <Link href="/privacy">
+              <a className={classes.link}>privacy policy.</a>
             </Link>
           </Typography>
         </Grid>

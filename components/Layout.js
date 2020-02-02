@@ -40,7 +40,7 @@ export default function Layout({ children, toggleDarkMode, token, user }) {
 
   return (
     <>
-      <title>RSEDGE</title>
+      <title>RS EDGE</title>
       <Navbar toggleDarkMode={toggleDarkMode} token={token} user={user}>
         <div className={token ? classes.content : classes.content2}>
           {children}
