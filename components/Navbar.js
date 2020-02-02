@@ -278,6 +278,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
 
   const onLogout = () => {
     handleLogout();
+    setMobileMoreAnchorEl(null);
   };
 
   const menuId = "primary-search-account-menu";
