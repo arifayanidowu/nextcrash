@@ -188,7 +188,7 @@ export default function VendorRegister() {
                   color="secondary"
                   className={classes.message}
                 >
-                  * Please kindly follow this steps above, religiously.
+                  * Please kindly follow the steps above, religiously.
                 </Typography>
               </div>
             </Grid>
