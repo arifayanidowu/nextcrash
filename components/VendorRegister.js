@@ -24,6 +24,10 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import StepContent from "@material-ui/core/StepContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import { useMutation } from "@apollo/react-hooks";
+import { VENDOR_REG } from "../queries";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,9 +90,11 @@ export default function VendorRegister() {
   const [togglePassword, setTogglePassword] = React.useState(false);
   const [terms, setTerms] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(4);
+  const [vendorReg, { loading }] = useMutation(VENDOR_REG);
   const theme = useTheme();
 
   const handleChange = event => {
+    event.persist();
     const { target } = event;
     setValue(prevState => ({ ...prevState, [target.id]: target.value }));
   };
@@ -107,6 +113,24 @@ export default function VendorRegister() {
     value.company_name &&
     terms
   );
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    vendorReg({
+      variables: {
+        email: value.email,
+        password: value.password,
+        company_name: value.company_name
+      }
+    })
+      .then(doc => {
+        setValue(INIT_STATE);
+        setTerms(false);
+
+        console.log(doc.data);
+      })
+      .catch(err => console.error(err));
+  };
 
   return (
     <div className={classes.root}>
@@ -194,7 +218,7 @@ export default function VendorRegister() {
             </Grid>
 
             <Grid item md={6} xs={12}>
-              <form className={classes.form}>
+              <form className={classes.form} onSubmit={handleSubmit}>
                 <TextField
                   id="company_name"
                   type="text"
@@ -252,7 +276,7 @@ export default function VendorRegister() {
                     }
                     label={
                       <span style={{ fontFamily: "Rubik" }}>
-                        I agree to RSEDGE's{" "}
+                        I agree to RS EDGE's{" "}
                         <Link href="/terms">
                           <a style={{ color: theme.palette.secondary.light }}>
                             Terms of Use
@@ -275,13 +299,25 @@ export default function VendorRegister() {
                   fullWidth
                   color="secondary"
                   size="large"
-                  disabled={isValidated}
+                  disabled={isValidated || loading}
                   style={{
                     cursor: isValidated ? "not-allowed" : "pointer",
                     pointerEvents: "all"
                   }}
                 >
-                  <span>Submit</span>
+                  {loading ? (
+                    <span
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      Loading... <CircularProgress size={20} />
+                    </span>
+                  ) : (
+                    <span>Submit</span>
+                  )}
                 </Button>
               </form>
               <Link href="/login">

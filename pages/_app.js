@@ -121,6 +121,8 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
                 subdivision
                 phone
                 online
+                company_name
+                role
               }
             }
         

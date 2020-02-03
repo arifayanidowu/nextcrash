@@ -55,6 +55,17 @@ export const LOGIN = gql`
   }
 `;
 
+export const VENDOR_REG = gql`
+  mutation VendorReg($email: String, $password: String, $company_name: String) {
+    vendorReg(email: $email, password: $password, company_name: $company_name) {
+      id
+      email
+      password
+      company_name
+    }
+  }
+`;
+
 export const CREATE_USER = gql`
   mutation AddUser(
     $lastname: String!
@@ -119,6 +130,86 @@ export const EDIT_USER = gql`
       division
       subdivision
       email
+    }
+  }
+`;
+
+export const EDIT_VENDOR = gql`
+  mutation EditVendor(
+    $id: ID
+    $company_name: String
+    $registration_no: String
+    $office_address: String
+    $city: String
+    $state: String
+    $country: String
+    $company_tel: String
+    $company_email: String
+    $company_website: String
+    $contact_person: String
+    $designation: String
+    $contact_tel: String
+    $contact_email: String
+    $num_of_employee: String
+    $year_est: String
+    $tax_num: String
+    $vat_reg_no: String
+    $acct_name: String
+    $acct_no: String
+    $bank: String
+    $sortCode: String
+    $branch: String
+    $bank_contact_phone: String
+    $ref_company_name: String
+    $ref_company_address: String
+    $ref_contact_person: String
+    $ref_contact_designation: String
+    $ref_contact_email: String
+    $ref_contact_phone: String
+    $individual_name: String
+    $individual_address: String
+    $individual_email: String
+    $individual_phone: String
+  ) {
+    editVendor(
+      id: $id
+      company_name: $company_name
+
+      registration_no: $registration_no
+      office_address: $office_address
+      city: $city
+      state: $state
+      country: $country
+      company_tel: $company_tel
+      company_email: $company_email
+      company_website: $company_website
+      contact_person: $contact_person
+      designation: $designation
+      contact_tel: $contact_tel
+      contact_email: $contact_email
+      num_of_employee: $num_of_employee
+      year_est: $year_est
+      tax_num: $tax_num
+      vat_reg_no: $vat_reg_no
+      acct_name: $acct_name
+      acct_no: $acct_no
+      bank: $bank
+      sortCode: $sortCode
+      branch: $branch
+      bank_contact_phone: $bank_contact_phone
+      ref_company_name: $ref_company_name
+      ref_company_address: $ref_company_address
+      ref_contact_person: $ref_contact_person
+      ref_contact_designation: $ref_contact_designation
+      ref_contact_email: $ref_contact_email
+      ref_contact_phone: $ref_contact_phone
+
+      individual_name: $individual_name
+      individual_address: $individual_address
+      individual_email: $individual_email
+      individual_phone: $individual_phone
+    ) {
+      id
     }
   }
 `;

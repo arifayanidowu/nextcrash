@@ -13,6 +13,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "../../utils/countries";
+import { EDIT_VENDOR } from "../../queries";
+import { useMutation } from "@apollo/react-hooks";
 
 function countryToFlag(isoCode) {
   return typeof String.fromCodePoint !== "undefined"
@@ -79,10 +81,55 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Add() {
+const INIT_STATE = {
+  company_name: "",
+  registration_no: "",
+  office_address: "",
+  city: "",
+  state: "",
+  country: "",
+  company_tel: "",
+  company_email: "",
+  company_website: "",
+  contact_person: "",
+  designation: "",
+  contact_tel: "",
+  contact_email: "",
+  num_of_employee: "",
+  year_est: "",
+  tax_num: "",
+  vat_reg_no: "",
+  acct_name: "",
+  acct_no: "",
+  bank: "",
+  sortCode: "",
+  branch: "",
+  bank_contact_phone: "",
+  ref_company_name: "",
+  ref_company_address: "",
+  ref_contact_person: "",
+  ref_contact_designation: "",
+  ref_contact_email: "",
+  ref_contact_phone: "",
+  individual_name: "",
+  individual_address: "",
+  individual_email: "",
+  individual_phone: ""
+};
+
+export default function Add({ user }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [state, setState] = React.useState(INIT_STATE);
   const [code, setCode] = React.useState(null);
+  const [editVendor, { loading, data }] = useMutation(EDIT_VENDOR);
+
+  // React.useEffect(() => {
+  //   setState(prevState => ({
+  //     ...prevState,
+  //     company_name: user.authUser.company_name
+  //   }));
+  // }, [user]);
 
   const defaultProps = {
     options: countries,
@@ -99,12 +146,72 @@ export default function Add() {
     setValue(newValue);
   };
 
+  const handleInputChange = e => {
+    e.persist();
+    setState(prevState => ({
+      ...prevState,
+      [e.target.id]: e.target.value
+    }));
+  };
+
   const handleNext = () => {
     setValue(value + 1);
   };
 
   const handlePrev = () => {
     setValue(value - 1);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const payload = {
+      ...state,
+      country: code.label
+    };
+    editVendor({
+      variables: {
+        id: user.authUser.id,
+        company_name: payload.company_name,
+
+        registration_no: payload.registration_no,
+        office_address: payload.office_address,
+        city: payload.city,
+        state: payload.state,
+        country: payload.country,
+        company_tel: payload.company_tel,
+        company_email: payload.company_email,
+        company_website: payload.company_website,
+        contact_person: payload.contact_person,
+        designation: payload.designation,
+        contact_tel: payload.contact_tel,
+        contact_email: payload.contact_email,
+        num_of_employee: payload.num_of_employee,
+        year_est: payload.year_est,
+        tax_num: payload.tax_num,
+        vat_reg_no: payload.vat_reg_no,
+        acct_name: payload.acct_name,
+        acct_no: payload.acct_no,
+        bank: payload.bank,
+        sortCode: payload.sortCode,
+        branch: payload.branch,
+        bank_contact_phone: payload.bank_contact_phone,
+        ref_company_name: payload.ref_company_name,
+        ref_company_address: payload.ref_company_address,
+        ref_contact_person: payload.ref_contact_person,
+        ref_contact_designation: payload.ref_contact_designation,
+        ref_contact_email: payload.ref_contact_email,
+        ref_contact_phone: payload.ref_contact_phone,
+        individual_name: payload.individual_name,
+        individual_address: payload.individual_address,
+        individual_email: payload.individual_email,
+        individual_phone: payload.individual_phone
+      }
+    })
+      .then(doc => {
+        console.log(doc);
+        console.log("Data", data);
+      })
+      .catch(err => console.error(err));
   };
 
   return (
@@ -114,7 +221,7 @@ export default function Add() {
           <Typography align="center" variant="h5" gutterBottom>
             New Vendor Registration
           </Typography>
-          <form>
+          <form onSubmit={handleSubmit}>
             <AppBar position="static">
               {/* <Paper square> */}
               <Tabs
@@ -158,19 +265,23 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.company_name || user.authUser.company_name}
+                    onChange={handleInputChange}
                   />
                 </Grid>
 
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="registration_number"
+                    id="registration_no"
                     type="text"
                     label="Registration Number"
                     placeholder="Registration Number"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.registration_no}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={12}>
@@ -183,6 +294,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.office_address}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -195,6 +308,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.city}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -207,6 +322,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.state}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -241,13 +358,15 @@ export default function Add() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="company_phone"
+                    id="company_tel"
                     type="tel"
                     label="Company Telephone"
                     placeholder="Company Telephone"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.company_tel}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -260,6 +379,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.company_email}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -271,6 +392,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.company_website}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -283,6 +406,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.contact_person}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -295,18 +420,22 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.designation}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="contact_telephone"
+                    id="contact_tel"
                     type="tel"
                     label="Contact Telephone"
                     placeholder="Contact Telephone"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.contact_tel}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -319,6 +448,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.contact_email}
+                    onChange={handleInputChange}
                   />
                 </Grid>
               </Grid>
@@ -328,49 +459,57 @@ export default function Add() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="no_of_employee"
+                    id="num_of_employee"
                     type="text"
                     label="No Of Employee"
                     placeholder="No Of Employee"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.num_of_employee}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="year_established"
+                    id="year_est"
                     type="text"
                     label="Year Established"
                     placeholder="Year Established"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.year_est}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="tax_no"
+                    id="tax_num"
                     type="text"
                     label="Tax Identification No."
                     placeholder="Tax Identification No."
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.tax_num}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="vat_no"
+                    id="vat_reg_no"
                     type="text"
                     label="VAT Registration No."
                     placeholder="VAT Registration No."
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    state={state.vat_reg_no}
+                    onChange={handleInputChange}
                   />
                 </Grid>
               </Grid>
@@ -387,6 +526,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.acct_name}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -399,6 +540,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.acct_no}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -411,18 +554,22 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.bank}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="sort_code"
+                    id="sortCode"
                     type="text"
                     label="Sort Code"
                     placeholder="Sort Code"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.sortCode}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -435,6 +582,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.branch}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -447,6 +596,8 @@ export default function Add() {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.bank_contact_phone}
+                    onChange={handleInputChange}
                   />
                 </Grid>
               </Grid>
@@ -456,73 +607,85 @@ export default function Add() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="coy_name"
+                    id="ref_company_name"
                     type="text"
                     label="Company Name"
                     placeholder="Company Name"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.ref_company_name}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="coy_address"
+                    id="ref_company_address"
                     type="text"
                     label="Company Address"
                     placeholder="Company Address"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.ref_company_address}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="coy_person"
+                    id="ref_contact_person"
                     type="text"
                     label="Contact Person"
                     placeholder="Contact Person"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.ref_contact_person}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="contact_designation"
+                    id="ref_contact_designation"
                     type="text"
                     label="Contact Designation"
                     placeholder="Contact Designation"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.ref_contact_designation}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="contact_email"
+                    id="ref_contact_email"
                     type="email"
                     label="Contact Email"
                     placeholder="Contact Email"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.ref_contact_email}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
                     required
-                    id="contact_phone"
+                    id="ref_contact_phone"
                     type="tel"
                     label="Contact Phone"
                     placeholder="Contact Phone"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.ref_contact_phone}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item md={12}>
@@ -533,49 +696,57 @@ export default function Add() {
                 <Grid item md={6} xs={12}>
                   <TextField
                     required
-                    id="ref_name"
+                    id="individual_name"
                     type="text"
                     label="Name"
                     placeholder="Name"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.individual_name}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <TextField
                     required
-                    id="ref_address"
+                    id="individual_address"
                     type="text"
                     label="Address"
                     placeholder="Address"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.individual_address}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <TextField
                     required
-                    id="ref_email"
+                    id="individual_email"
                     type="email"
                     label="Email"
                     placeholder="Email"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.individual_email}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <TextField
                     required
-                    id="ref_phone"
+                    id="individual_phone"
                     type="tel"
                     label="Phone"
                     placeholder="Phone"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
+                    value={state.individual_phone}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Button

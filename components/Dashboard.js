@@ -42,6 +42,12 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     marginBottom: theme.spacing(4)
+  },
+  calender: {
+    padding: 5,
+    [theme.breakpoints.down("sm")]: {
+      padding: 2
+    }
   }
 }));
 
@@ -62,7 +68,7 @@ export default function Dashboard({ user }) {
       <Grid container spacing={3} justify="space-between" alignContent="center">
         <Grid item xs={8} md={10}></Grid>
         <Grid item xs={4} md={2}>
-          <Paper elevation={1} style={{ padding: 5 }}>
+          <Paper elevation={1} className={classes.calender}>
             <Typography
               style={{
                 display: "flex",

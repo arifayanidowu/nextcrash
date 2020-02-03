@@ -20,7 +20,31 @@ const vendorSchema = new Schema(
     role: {
       type: String,
       default: "vendor"
-    }
+    },
+    general_info: {
+      type: Object
+    },
+    business_info: {
+      type: Object
+    },
+    tech_capability: {
+      type: Object
+    },
+    work_reference: {
+      type: Object
+    },
+    bank_detail: {
+      type: Object
+    },
+    status: {
+      type: String,
+      default: "pending"
+    },
+    classes: {
+      type: Number
+    },
+    contracts: [Object],
+    isContracted: { type: Boolean, default: false }
   },
   { timestamps: true }
 );

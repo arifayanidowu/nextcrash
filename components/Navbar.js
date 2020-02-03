@@ -373,13 +373,12 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
 
             <ListItemText
               primary={
-                user && (
-                  <Link href="/">
-                    <a style={{ color: theme.palette.common.white }}>
-                      {user.authUser.firstname + " " + user.authUser.lastname}
-                    </a>
-                  </Link>
-                )
+                <Link href="/">
+                  <a style={{ color: theme.palette.common.white }}>
+                    {(user && user.authUser.firstname) ||
+                      (user && user.authUser.company_name)}
+                  </a>
+                </Link>
               }
             />
           </ListItem>
