@@ -13,8 +13,9 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "../../utils/countries";
-import { EDIT_VENDOR } from "../../queries";
-import { useMutation } from "@apollo/react-hooks";
+import { EDIT_VENDOR, GET_VENDOR } from "../../queries";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import axios from "axios";
 
 function countryToFlag(isoCode) {
   return typeof String.fromCodePoint !== "undefined"
@@ -122,7 +123,7 @@ export default function Add({ user }) {
   const [value, setValue] = React.useState(0);
   const [state, setState] = React.useState(INIT_STATE);
   const [code, setCode] = React.useState(null);
-  const [editVendor, { loading, data }] = useMutation(EDIT_VENDOR);
+  const [editVendor] = useMutation(EDIT_VENDOR);
 
   React.useEffect(() => {
     setState(prevState => ({
@@ -130,6 +131,61 @@ export default function Add({ user }) {
       company_name: user.authUser.company_name
     }));
   }, [user]);
+
+  const { data, loading, error } = useQuery(GET_VENDOR, {
+    variables: {
+      id: user.authUser.id
+    }
+  });
+
+  if (error) {
+    return <p>Error!!!</p>;
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  // React.useEffect(() => {
+  //   setState(prevState => ({
+  //     ...prevState,
+  //     company_name: data.vendor.company_name,
+  //     registration_no: data.vendor.general_info.registration_no,
+  //     office_address: data.vendor.general_info.office_address,
+  //     city: data.vendor.general_info.city,
+  //     state: data.vendor.general_info.state,
+  //     country: data.vendor.general_info.country,
+  //     company_tel: data.vendor.general_info.company_tel,
+  //     company_email: data.vendor.general_info.company_email,
+  //     company_website: data.vendor.general_info.company_website,
+  //     contact_person: data.vendor.general_info.contact_person,
+  //     designation: data.vendor.general_info.designation,
+  //     contact_tel: data.vendor.general_info.contact_tel,
+  //     contact_email: data.vendor.general_info.contact_email,
+  //     num_of_employee: data.vendor.business_info.num_of_employee,
+  //     year_est: data.vendor.business_info.year_est,
+  //     tax_num: data.vendor.business_info.tax_num,
+  //     vat_reg_no: data.vendor.business_info.vat_reg_no,
+  //     acct_name: "",
+  //     acct_no: "",
+  //     bank: "",
+  //     sortCode: "",
+  //     branch: "",
+  //     bank_contact_phone: "",
+  //     ref_company_name: "",
+  //     ref_company_address: "",
+  //     ref_contact_person: "",
+  //     ref_contact_designation: "",
+  //     ref_contact_email: "",
+  //     ref_contact_phone: "",
+  //     individual_name: "",
+  //     individual_address: "",
+  //     individual_email: "",
+  //     individual_phone: ""
+  //   }));
+  // }, [data]);
+
+  console.log(data);
 
   const defaultProps = {
     options: countries,
@@ -168,51 +224,50 @@ export default function Add({ user }) {
       ...state,
       country: code.label
     };
-    console.log(payload);
-    // editVendor({
-    //   variables: {
-    //     id: user.authUser.id,
-    //     company_name: payload.company_name,
 
-    //     registration_no: payload.registration_no,
-    //     office_address: payload.office_address,
-    //     city: payload.city,
-    //     state: payload.state,
-    //     country: payload.country,
-    //     company_tel: payload.company_tel,
-    //     company_email: payload.company_email,
-    //     company_website: payload.company_website,
-    //     contact_person: payload.contact_person,
-    //     designation: payload.designation,
-    //     contact_tel: payload.contact_tel,
-    //     contact_email: payload.contact_email,
-    //     num_of_employee: payload.num_of_employee,
-    //     year_est: payload.year_est,
-    //     tax_num: payload.tax_num,
-    //     vat_reg_no: payload.vat_reg_no,
-    //     acct_name: payload.acct_name,
-    //     acct_no: payload.acct_no,
-    //     bank: payload.bank,
-    //     sortCode: payload.sortCode,
-    //     branch: payload.branch,
-    //     bank_contact_phone: payload.bank_contact_phone,
-    //     ref_company_name: payload.ref_company_name,
-    //     ref_company_address: payload.ref_company_address,
-    //     ref_contact_person: payload.ref_contact_person,
-    //     ref_contact_designation: payload.ref_contact_designation,
-    //     ref_contact_email: payload.ref_contact_email,
-    //     ref_contact_phone: payload.ref_contact_phone,
-    //     individual_name: payload.individual_name,
-    //     individual_address: payload.individual_address,
-    //     individual_email: payload.individual_email,
-    //     individual_phone: payload.individual_phone
-    //   }
-    // })
-    //   .then(doc => {
-    //     console.log(doc);
-    //     console.log("Data", data);
-    //   })
-    //   .catch(err => console.error(err));
+    editVendor({
+      variables: {
+        id: user.authUser.id,
+        company_name: payload.company_name,
+
+        registration_no: payload.registration_no,
+        office_address: payload.office_address,
+        city: payload.city,
+        state: payload.state,
+        country: payload.country,
+        company_tel: payload.company_tel,
+        company_email: payload.company_email,
+        company_website: payload.company_website,
+        contact_person: payload.contact_person,
+        designation: payload.designation,
+        contact_tel: payload.contact_tel,
+        contact_email: payload.contact_email,
+        num_of_employee: payload.num_of_employee,
+        year_est: payload.year_est,
+        tax_num: payload.tax_num,
+        vat_reg_no: payload.vat_reg_no,
+        acct_name: payload.acct_name,
+        acct_no: payload.acct_no,
+        bank: payload.bank,
+        sortCode: payload.sortCode,
+        branch: payload.branch,
+        bank_contact_phone: payload.bank_contact_phone,
+        ref_company_name: payload.ref_company_name,
+        ref_company_address: payload.ref_company_address,
+        ref_contact_person: payload.ref_contact_person,
+        ref_contact_designation: payload.ref_contact_designation,
+        ref_contact_email: payload.ref_contact_email,
+        ref_contact_phone: payload.ref_contact_phone,
+        individual_name: payload.individual_name,
+        individual_address: payload.individual_address,
+        individual_email: payload.individual_email,
+        individual_phone: payload.individual_phone
+      }
+    })
+      .then(doc => {
+        console.log(doc);
+      })
+      .catch(err => console.error(err));
   };
 
   return (

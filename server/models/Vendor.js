@@ -33,7 +33,10 @@ const vendorSchema = new Schema(
     work_reference: {
       type: Object
     },
-    bank_detail: {
+    bank_details: {
+      type: Object
+    },
+    individual_reference: {
       type: Object
     },
     status: {

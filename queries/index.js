@@ -135,25 +135,9 @@ export const EDIT_USER = gql`
 `;
 
 export const EDIT_VENDOR = gql`
-  input General_input {
-    registration_no: String
-    office_address: String
-    city: String
-    state: String
-    country: String
-    company_tel: String
-    company_email: String
-    company_website: String
-    contact_person: String
-    designation: String
-    contact_tel: String
-    contact_email: String
-  }
-
   mutation EditVendor(
     $id: ID
     $company_name: String
-    $general_info: General_input
     $registration_no: String
     $office_address: String
     $city: String
@@ -226,6 +210,59 @@ export const EDIT_VENDOR = gql`
       individual_phone: $individual_phone
     ) {
       id
+    }
+  }
+`;
+
+export const GET_VENDOR = gql`
+  query Vendor($id: String!) {
+    vendor(id: $id) {
+      id
+      email
+      company_name
+
+      general_info {
+        registration_no
+        office_address
+        city
+        state
+        country
+        company_tel
+        company_email
+        company_website
+        contact_person
+        designation
+        contact_tel
+        contact_email
+      }
+      business_info {
+        num_of_employee
+        year_est
+        tax_num
+        vat_reg_no
+      }
+      bank_details {
+        acct_name
+        acct_no
+        bank
+        sortCode
+        branch
+        bank_contact_phone
+      }
+      work_reference {
+        ref_company_name
+        ref_company_address
+        ref_contact_person
+        ref_contact_designation
+        ref_contact_email
+        ref_contact_phone
+      }
+      individual_reference {
+        individual_name
+        individual_address
+        individual_email
+        individual_phone
+      }
     }
   }
 `;
