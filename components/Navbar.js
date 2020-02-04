@@ -206,8 +206,10 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
   }, [token]);
 
   React.useEffect(() => {
-    const fullname = user.authUser.firstname + " " + user.authUser.lastname;
-    setName(fullname);
+    const fullname =
+      user && user.authUser.firstname + " " + user.authUser.lastname;
+    const company = user && user.authUser.company_name;
+    setName(user && user.authUser.role !== "vendor" ? fullname : company);
   }, [user]);
 
   navRef.current = scroll;
@@ -359,9 +361,6 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
     </Menu>
   );
 
-  // const fullname =
-  //   (user && user.authUser.firstname) || (user && user.authUser.company_name);
-
   const drawer = (
     <PerfectScrollbar>
       <div>
@@ -383,10 +382,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
             <ListItemText
               primary={
                 <Link href="/">
-                  <a style={{ color: theme.palette.common.white }}>
-                    {(user && user.authUser.firstname) ||
-                      (user && user.authUser.company_name)}
-                  </a>
+                  <a style={{ color: theme.palette.common.white }}>{name}</a>
                 </Link>
               }
             />
