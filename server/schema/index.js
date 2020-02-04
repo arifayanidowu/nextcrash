@@ -34,7 +34,6 @@ const typeDefs = gql`
   }
 
   type General_info {
-    company_name: String
     registration_no: String
     office_address: String
     city: String
@@ -182,12 +181,38 @@ const typeDefs = gql`
     editVendor(
       id: ID
       company_name: String
-      role: String
-      general_info: General_input
-      business_info: Business_input
-      bank_details: Bank_input
-      work_reference: Work_input
-      individual_reference: Individual_input
+      registration_no: String
+      office_address: String
+      city: String
+      state: String
+      country: String
+      company_tel: String
+      company_email: String
+      company_website: String
+      contact_person: String
+      designation: String
+      contact_tel: String
+      contact_email: String
+      num_of_employee: String
+      year_est: String
+      tax_num: String
+      vat_reg_no: String
+      acct_name: String
+      acct_no: String
+      bank: String
+      sortCode: String
+      branch: String
+      bank_contact_phone: String
+      ref_company_name: String
+      ref_company_address: String
+      ref_contact_person: String
+      ref_contact_designation: String
+      ref_contact_email: String
+      ref_contact_phone: String
+      individual_name: String
+      individual_address: String
+      individual_email: String
+      individual_phone: String
     ): Vendor
   }
 `;
@@ -395,6 +420,7 @@ const resolvers = {
         year_est,
         tax_num,
         vat_reg_no,
+
         acct_name,
         acct_no,
         bank,
@@ -407,7 +433,6 @@ const resolvers = {
         ref_contact_designation,
         ref_contact_email,
         ref_contact_phone,
-
         individual_name,
         individual_address,
         individual_email,

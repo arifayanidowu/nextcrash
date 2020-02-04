@@ -124,12 +124,12 @@ export default function Add({ user }) {
   const [code, setCode] = React.useState(null);
   const [editVendor, { loading, data }] = useMutation(EDIT_VENDOR);
 
-  // React.useEffect(() => {
-  //   setState(prevState => ({
-  //     ...prevState,
-  //     company_name: user.authUser.company_name
-  //   }));
-  // }, [user]);
+  React.useEffect(() => {
+    setState(prevState => ({
+      ...prevState,
+      company_name: user.authUser.company_name
+    }));
+  }, [user]);
 
   const defaultProps = {
     options: countries,
@@ -168,50 +168,51 @@ export default function Add({ user }) {
       ...state,
       country: code.label
     };
-    editVendor({
-      variables: {
-        id: user.authUser.id,
-        company_name: payload.company_name,
+    console.log(payload);
+    // editVendor({
+    //   variables: {
+    //     id: user.authUser.id,
+    //     company_name: payload.company_name,
 
-        registration_no: payload.registration_no,
-        office_address: payload.office_address,
-        city: payload.city,
-        state: payload.state,
-        country: payload.country,
-        company_tel: payload.company_tel,
-        company_email: payload.company_email,
-        company_website: payload.company_website,
-        contact_person: payload.contact_person,
-        designation: payload.designation,
-        contact_tel: payload.contact_tel,
-        contact_email: payload.contact_email,
-        num_of_employee: payload.num_of_employee,
-        year_est: payload.year_est,
-        tax_num: payload.tax_num,
-        vat_reg_no: payload.vat_reg_no,
-        acct_name: payload.acct_name,
-        acct_no: payload.acct_no,
-        bank: payload.bank,
-        sortCode: payload.sortCode,
-        branch: payload.branch,
-        bank_contact_phone: payload.bank_contact_phone,
-        ref_company_name: payload.ref_company_name,
-        ref_company_address: payload.ref_company_address,
-        ref_contact_person: payload.ref_contact_person,
-        ref_contact_designation: payload.ref_contact_designation,
-        ref_contact_email: payload.ref_contact_email,
-        ref_contact_phone: payload.ref_contact_phone,
-        individual_name: payload.individual_name,
-        individual_address: payload.individual_address,
-        individual_email: payload.individual_email,
-        individual_phone: payload.individual_phone
-      }
-    })
-      .then(doc => {
-        console.log(doc);
-        console.log("Data", data);
-      })
-      .catch(err => console.error(err));
+    //     registration_no: payload.registration_no,
+    //     office_address: payload.office_address,
+    //     city: payload.city,
+    //     state: payload.state,
+    //     country: payload.country,
+    //     company_tel: payload.company_tel,
+    //     company_email: payload.company_email,
+    //     company_website: payload.company_website,
+    //     contact_person: payload.contact_person,
+    //     designation: payload.designation,
+    //     contact_tel: payload.contact_tel,
+    //     contact_email: payload.contact_email,
+    //     num_of_employee: payload.num_of_employee,
+    //     year_est: payload.year_est,
+    //     tax_num: payload.tax_num,
+    //     vat_reg_no: payload.vat_reg_no,
+    //     acct_name: payload.acct_name,
+    //     acct_no: payload.acct_no,
+    //     bank: payload.bank,
+    //     sortCode: payload.sortCode,
+    //     branch: payload.branch,
+    //     bank_contact_phone: payload.bank_contact_phone,
+    //     ref_company_name: payload.ref_company_name,
+    //     ref_company_address: payload.ref_company_address,
+    //     ref_contact_person: payload.ref_contact_person,
+    //     ref_contact_designation: payload.ref_contact_designation,
+    //     ref_contact_email: payload.ref_contact_email,
+    //     ref_contact_phone: payload.ref_contact_phone,
+    //     individual_name: payload.individual_name,
+    //     individual_address: payload.individual_address,
+    //     individual_email: payload.individual_email,
+    //     individual_phone: payload.individual_phone
+    //   }
+    // })
+    //   .then(doc => {
+    //     console.log(doc);
+    //     console.log("Data", data);
+    //   })
+    //   .catch(err => console.error(err));
   };
 
   return (
@@ -265,7 +266,7 @@ export default function Add({ user }) {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
-                    value={state.company_name || user.authUser.company_name}
+                    value={state.company_name}
                     onChange={handleInputChange}
                   />
                 </Grid>

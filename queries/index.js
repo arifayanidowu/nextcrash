@@ -135,9 +135,25 @@ export const EDIT_USER = gql`
 `;
 
 export const EDIT_VENDOR = gql`
+  input General_input {
+    registration_no: String
+    office_address: String
+    city: String
+    state: String
+    country: String
+    company_tel: String
+    company_email: String
+    company_website: String
+    contact_person: String
+    designation: String
+    contact_tel: String
+    contact_email: String
+  }
+
   mutation EditVendor(
     $id: ID
     $company_name: String
+    $general_info: General_input
     $registration_no: String
     $office_address: String
     $city: String
