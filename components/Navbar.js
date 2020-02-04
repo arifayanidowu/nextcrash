@@ -198,11 +198,17 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
   const [inventory, setInventory] = React.useState(false);
   const [navwidth, setNavwitdth] = React.useState(true);
   const [scroll, setScroll] = React.useState(false);
+  const [name, setName] = React.useState("");
   const navRef = React.useRef(null);
 
   React.useEffect(() => {
     setNavwitdth(!token);
   }, [token]);
+
+  React.useEffect(() => {
+    const fullname = user.authUser.firstname + " " + user.authUser.lastname;
+    setName(fullname);
+  }, [user]);
 
   navRef.current = scroll;
 
@@ -352,6 +358,9 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
       </MenuItem>
     </Menu>
   );
+
+  // const fullname =
+  //   (user && user.authUser.firstname) || (user && user.authUser.company_name);
 
   const drawer = (
     <PerfectScrollbar>
