@@ -11,11 +11,14 @@ import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "../../utils/countries";
-import { EDIT_VENDOR, GET_VENDOR } from "../../queries";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { EDIT_VENDOR } from "../../queries";
+import { useMutation } from "@apollo/react-hooks";
 import axios from "axios";
+import baseUrl from "../../utils/baseUrl";
 
 function countryToFlag(isoCode) {
   return typeof String.fromCodePoint !== "undefined"
@@ -123,76 +126,135 @@ export default function Add({ user }) {
   const [value, setValue] = React.useState(0);
   const [state, setState] = React.useState(INIT_STATE);
   const [code, setCode] = React.useState(null);
-  const [editVendor] = useMutation(EDIT_VENDOR);
+  const [editVendor, { loading }] = useMutation(EDIT_VENDOR);
+
+  const URL = `${baseUrl}/graphql`;
 
   React.useEffect(() => {
-    setState(prevState => ({
-      ...prevState,
-      company_name: user.authUser.company_name
-    }));
-  }, [user]);
+    axios({
+      method: "POST",
+      url: URL,
+      data: {
+        query: `
+          query Vendor($id: String!) {
+            vendor(id: $id){
+              id
+              email
+              company_name
 
-  const { data, loading, error } = useQuery(GET_VENDOR, {
-    variables: {
-      id: user.authUser.id
-    }
-  });
+              general_info {
+                registration_no
+                office_address
+                city
+                state
+                country
+                company_tel
+                company_email
+                company_website
+                contact_person
+                designation
+                contact_tel
+                contact_email
+              }
+              business_info {
+                num_of_employee
+                year_est
+                tax_num
+                vat_reg_no
+              }
+              bank_details {
+                acct_name
+                acct_no
+                bank
+                sortCode
+                branch
+                bank_contact_phone
+              }
+              work_reference {
+                ref_company_name
+                ref_company_address
+                ref_contact_person
+                ref_contact_designation
+                ref_contact_email
+                ref_contact_phone
+              }
+              individual_reference {
+                individual_name
+                individual_address
+                individual_email
+                individual_phone
+              }
+            }
 
-  if (error) {
-    return <p>Error!!!</p>;
-  }
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  // React.useEffect(() => {
-  //   setState(prevState => ({
-  //     ...prevState,
-  //     company_name: data.vendor.company_name,
-  //     registration_no: data.vendor.general_info.registration_no,
-  //     office_address: data.vendor.general_info.office_address,
-  //     city: data.vendor.general_info.city,
-  //     state: data.vendor.general_info.state,
-  //     country: data.vendor.general_info.country,
-  //     company_tel: data.vendor.general_info.company_tel,
-  //     company_email: data.vendor.general_info.company_email,
-  //     company_website: data.vendor.general_info.company_website,
-  //     contact_person: data.vendor.general_info.contact_person,
-  //     designation: data.vendor.general_info.designation,
-  //     contact_tel: data.vendor.general_info.contact_tel,
-  //     contact_email: data.vendor.general_info.contact_email,
-  //     num_of_employee: data.vendor.business_info.num_of_employee,
-  //     year_est: data.vendor.business_info.year_est,
-  //     tax_num: data.vendor.business_info.tax_num,
-  //     vat_reg_no: data.vendor.business_info.vat_reg_no,
-  //     acct_name: "",
-  //     acct_no: "",
-  //     bank: "",
-  //     sortCode: "",
-  //     branch: "",
-  //     bank_contact_phone: "",
-  //     ref_company_name: "",
-  //     ref_company_address: "",
-  //     ref_contact_person: "",
-  //     ref_contact_designation: "",
-  //     ref_contact_email: "",
-  //     ref_contact_phone: "",
-  //     individual_name: "",
-  //     individual_address: "",
-  //     individual_email: "",
-  //     individual_phone: ""
-  //   }));
-  // }, [data]);
-
-  console.log(data);
+          }
+        `,
+        variables: {
+          id: user.authUser.id
+        }
+      }
+    })
+      .then(doc => {
+        if (doc.data.data.vendor === null) {
+          setState(INIT_STATE);
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            company_name: doc.data.data.vendor.company_name,
+            registration_no: doc.data.data.vendor.general_info.registration_no,
+            office_address: doc.data.data.vendor.general_info.office_address,
+            city: doc.data.data.vendor.general_info.city,
+            state: doc.data.data.vendor.general_info.state,
+            country: doc.data.data.vendor.general_info.country,
+            company_tel: doc.data.data.vendor.general_info.company_tel,
+            company_email: doc.data.data.vendor.general_info.company_email,
+            company_website: doc.data.data.vendor.general_info.company_website,
+            contact_person: doc.data.data.vendor.general_info.contact_person,
+            designation: doc.data.data.vendor.general_info.designation,
+            contact_tel: doc.data.data.vendor.general_info.contact_tel,
+            contact_email: doc.data.data.vendor.general_info.contact_email,
+            num_of_employee: doc.data.data.vendor.business_info.num_of_employee,
+            year_est: doc.data.data.vendor.business_info.year_est,
+            tax_num: doc.data.data.vendor.business_info.tax_num,
+            vat_reg_no: doc.data.data.vendor.business_info.vat_reg_no,
+            acct_name: doc.data.data.vendor.bank_details.acct_name,
+            acct_no: doc.data.data.vendor.bank_details.acct_no,
+            bank: doc.data.data.vendor.bank_details.bank,
+            sortCode: doc.data.data.vendor.bank_details.sortCode,
+            branch: doc.data.data.vendor.bank_details.branch,
+            bank_contact_phone:
+              doc.data.data.vendor.bank_details.bank_contact_phone,
+            ref_company_name:
+              doc.data.data.vendor.work_reference.ref_company_name,
+            ref_company_address:
+              doc.data.data.vendor.work_reference.ref_company_address,
+            ref_contact_person:
+              doc.data.data.vendor.work_reference.ref_contact_person,
+            ref_contact_designation:
+              doc.data.data.vendor.work_reference.ref_contact_designation,
+            ref_contact_email:
+              doc.data.data.vendor.work_reference.ref_contact_email,
+            ref_contact_phone:
+              doc.data.data.vendor.work_reference.ref_contact_phone,
+            individual_name:
+              doc.data.data.vendor.individual_reference.individual_name,
+            individual_address:
+              doc.data.data.vendor.individual_reference.individual_address,
+            individual_email:
+              doc.data.data.vendor.individual_reference.individual_email,
+            individual_phone:
+              doc.data.data.vendor.individual_reference.individual_phone
+          }));
+        }
+      })
+      .catch(err => console.error(err));
+  }, [URL]);
 
   const defaultProps = {
     options: countries,
     getOptionLabel: option => option.label,
     renderOption: option => (
       <React.Fragment>
-        <span>{countryToFlag(option.code)}</span>
+        {/* <span>{countryToFlag(option.code)}</span> */}
         {option.label} ({option.code})
       </React.Fragment>
     )
@@ -269,6 +331,42 @@ export default function Add({ user }) {
       })
       .catch(err => console.error(err));
   };
+
+  const isDisabled = !(
+    state.company_name &&
+    state.registration_no &&
+    state.office_address &&
+    state.city &&
+    state.state &&
+    code &&
+    state.company_tel &&
+    state.company_email &&
+    state.company_website &&
+    state.contact_person &&
+    state.designation &&
+    state.contact_tel &&
+    state.contact_email &&
+    state.num_of_employee &&
+    state.year_est &&
+    state.tax_num &&
+    state.vat_reg_no &&
+    state.acct_name &&
+    state.acct_no &&
+    state.bank &&
+    state.sortCode &&
+    state.branch &&
+    state.bank_contact_phone &&
+    state.ref_company_name &&
+    state.ref_company_address &&
+    state.ref_contact_person &&
+    state.ref_contact_designation &&
+    state.ref_contact_email &&
+    state.ref_contact_phone &&
+    state.individual_name &&
+    state.individual_address &&
+    state.individual_email &&
+    state.individual_phone
+  );
 
   return (
     <div>
@@ -564,7 +662,7 @@ export default function Add({ user }) {
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
-                    state={state.vat_reg_no}
+                    value={state.vat_reg_no}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -811,8 +909,25 @@ export default function Add({ user }) {
                   color="secondary"
                   size="large"
                   fullWidth
+                  disabled={isDisabled}
+                  style={{
+                    cursor: isDisabled || loading ? "not-allowed" : "pointer",
+                    pointerEvents: "all"
+                  }}
                 >
-                  submit
+                  {loading ? (
+                    <span
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      Loading... <CircularProgress size={20} />
+                    </span>
+                  ) : (
+                    <span>submit</span>
+                  )}
                 </Button>
               </Grid>
             </TabPanel>

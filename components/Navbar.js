@@ -399,7 +399,7 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => handleRoute("/vendor")}>
             <ListItemIcon>
               <AssignmentIndIcon />
             </ListItemIcon>
@@ -667,13 +667,10 @@ function Navbar({ container, children, toggleDarkMode, token, user }) {
           width: navwidth ? "100%" : "",
           backgroundColor: scroll
             ? theme.palette.background.paper
+            : token
+            ? theme.palette.background.paper
             : "transparent",
-          // backgroundColor: scroll
-          //   ? theme.palette.background.paper
-          //   : !token
-          //   ? "transparent"
-          //   : "#fefefe",
-          // boxShadow: auth && "none"
+
           transition: "all ease 300ms"
         }}
         elevation={user || scroll ? 3 : 0}
