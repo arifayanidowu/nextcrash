@@ -15,10 +15,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "../../utils/countries";
-import { ADD_VENDOR } from "../../queries";
+import { EDIT_VENDOR } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import axios from "axios";
 import baseUrl from "../../utils/baseUrl";
+import { useRouter } from "next/router";
 
 function countryToFlag(isoCode) {
   return typeof String.fromCodePoint !== "undefined"
@@ -121,12 +122,149 @@ const INIT_STATE = {
   individual_phone: ""
 };
 
-export default function Add() {
+export default function Edit() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [state, setState] = React.useState(INIT_STATE);
   const [code, setCode] = React.useState(null);
-  const [addVendor, { loading }] = useMutation(ADD_VENDOR);
+  const [editVendor, { loading }] = useMutation(EDIT_VENDOR);
+  const router = useRouter();
+
+  const URL = `${baseUrl}/graphql`;
+
+  React.useEffect(() => {
+    axios({
+      method: "POST",
+      url: URL,
+      data: {
+        query: `
+          query Vendor($id: String!) {
+            vendor(id: $id){
+              id
+              email
+              company_name
+
+              general_info {
+                registration_no
+                office_address
+                city
+                state
+                country
+                company_tel
+                company_email
+                company_website
+                contact_person
+                designation
+                contact_tel
+                contact_email
+              }
+              business_info {
+                num_of_employee
+                year_est
+                tax_num
+                vat_reg_no
+              }
+              bank_details {
+                acct_name
+                acct_no
+                bank
+                sortCode
+                branch
+                bank_contact_phone
+              }
+              work_reference {
+                ref_company_name
+                ref_company_address
+                ref_contact_person
+                ref_contact_designation
+                ref_contact_email
+                ref_contact_phone
+              }
+              individual_reference {
+                individual_name
+                individual_address
+                individual_email
+                individual_phone
+              }
+            }
+
+          }
+        `,
+        variables: {
+          id: router.query.id
+        }
+      }
+    })
+      .then(doc => {
+        if (doc.data.data.vendor === null) {
+          setState(INIT_STATE);
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            company_name: doc.data.data.vendor.company_name,
+            registration_no: doc.data.data.vendor.general_info.registration_no,
+            office_address: doc.data.data.vendor.general_info.office_address,
+            city: doc.data.data.vendor.general_info.city,
+            state: doc.data.data.vendor.general_info.state,
+            country: doc.data.data.vendor.general_info.country,
+            company_tel: doc.data.data.vendor.general_info.company_tel,
+            company_email: doc.data.data.vendor.general_info.company_email,
+            company_website: doc.data.data.vendor.general_info.company_website,
+            contact_person: doc.data.data.vendor.general_info.contact_person,
+            designation: doc.data.data.vendor.general_info.designation,
+            contact_tel: doc.data.data.vendor.general_info.contact_tel,
+            contact_email: doc.data.data.vendor.general_info.contact_email,
+            num_of_employee: doc.data.data.vendor.business_info.num_of_employee,
+            year_est: doc.data.data.vendor.business_info.year_est,
+            tax_num: doc.data.data.vendor.business_info.tax_num,
+            vat_reg_no: doc.data.data.vendor.business_info.vat_reg_no,
+            acct_name:
+              doc.data.data.vendor.bank_details &&
+              doc.data.data.vendor.bank_details.acct_name,
+            acct_no:
+              doc.data.data.vendor.bank_details &&
+              doc.data.data.vendor.bank_details.acct_no,
+            bank:
+              doc.data.data.vendor.bank_details &&
+              doc.data.data.vendor.bank_details.bank,
+            sortCode:
+              doc.data.data.vendor.bank_details &&
+              doc.data.data.vendor.bank_details.sortCode,
+            branch:
+              doc.data.data.vendor.bank_details &&
+              doc.data.data.vendor.bank_details.branch,
+            bank_contact_phone:
+              doc.data.data.vendor.bank_details &&
+              doc.data.data.vendor.bank_details.bank_contact_phone,
+            ref_company_name:
+              doc.data.data.vendor.work_reference.ref_company_name,
+            ref_company_address:
+              doc.data.data.vendor.work_reference.ref_company_address,
+            ref_contact_person:
+              doc.data.data.vendor.work_reference.ref_contact_person,
+            ref_contact_designation:
+              doc.data.data.vendor.work_reference.ref_contact_designation,
+            ref_contact_email:
+              doc.data.data.vendor.work_reference.ref_contact_email,
+            ref_contact_phone:
+              doc.data.data.vendor.work_reference.ref_contact_phone,
+            individual_name:
+              doc.data.data.vendor.individual_reference &&
+              doc.data.data.vendor.individual_reference.individual_name,
+            individual_address:
+              doc.data.data.vendor.individual_reference &&
+              doc.data.data.vendor.individual_reference.individual_address,
+            individual_email:
+              doc.data.data.vendor.individual_reference &&
+              doc.data.data.vendor.individual_reference.individual_email,
+            individual_phone:
+              doc.data.data.vendor.individual_reference &&
+              doc.data.data.vendor.individual_reference.individual_phone
+          }));
+        }
+      })
+      .catch(err => console.error(err));
+  }, [URL]);
 
   const defaultProps = {
     options: countries,
@@ -166,8 +304,9 @@ export default function Add() {
       country: code.label
     };
 
-    addVendor({
+    editVendor({
       variables: {
+        id: router.query.id,
         company_name: payload.company_name,
 
         registration_no: payload.registration_no,
@@ -205,7 +344,6 @@ export default function Add() {
       }
     })
       .then(doc => {
-        setState(INIT_STATE);
         console.log(doc);
       })
       .catch(err => console.error(err));
@@ -252,7 +390,7 @@ export default function Add() {
       <div className={classes.center}>
         <Card className={classes.card}>
           <Typography align="center" variant="h5" gutterBottom>
-            New Vendor Registration
+            Update Vendor Details
           </Typography>
           <form onSubmit={handleSubmit}>
             <AppBar position="static">
@@ -378,7 +516,6 @@ export default function Add() {
                         margin="normal"
                         fullWidth
                         required
-                        color={!code ? "secondary" : "primary"}
                         variant="outlined"
                         inputProps={{
                           ...params.inputProps,
@@ -815,7 +952,7 @@ export default function Add() {
                       Loading... <CircularProgress size={20} />
                     </span>
                   ) : (
-                    <span>submit</span>
+                    <span>update</span>
                   )}
                 </Button>
               </Grid>

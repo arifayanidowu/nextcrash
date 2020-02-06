@@ -100,7 +100,7 @@ export default function CreateAccount() {
     getOptionLabel: option => option.phone,
     renderOption: option => (
       <React.Fragment>
-        <span>{countryToFlag(option.code)}</span>
+        {/* <span>{countryToFlag(option.code)}</span> */}
         {option.label} ({option.code}) +{option.phone}
       </React.Fragment>
     )
@@ -234,7 +234,7 @@ export default function CreateAccount() {
                 variant="outlined"
                 className={classes.formControl}
                 fullWidth
-                required
+                // required
               >
                 <InputLabel
                   ref={inputLabel}
@@ -255,6 +255,13 @@ export default function CreateAccount() {
                   name="subdivision"
                   onChange={handleChange}
                   value={state.subdivision}
+                  disabled={
+                    state.division === "Topside" ||
+                    state.division === "Subsea" ||
+                    state.division === "UAV & Digital Solutions" ||
+                    state.division === "Niger Delta Regional" ||
+                    state.division === "Operations & Production"
+                  }
                 >
                   <option value="" />
                   {state.division === "Topside" ? (
@@ -338,6 +345,15 @@ export default function CreateAccount() {
                       autoComplete: "disabled",
                       name: "code"
                     }}
+                    helperText={
+                      !code ? (
+                        <Typography variant="inherit" color="secondary">
+                          * Please Select Country Code
+                        </Typography>
+                      ) : (
+                        ""
+                      )
+                    }
                   />
                 )}
               />

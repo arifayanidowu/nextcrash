@@ -34,8 +34,7 @@ const UserSchema = new Schema(
     },
     subdivision: {
       type: String,
-      trim: true,
-      required: true
+      trim: true
     },
     eid: {
       type: String,

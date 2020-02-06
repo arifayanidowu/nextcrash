@@ -278,7 +278,7 @@ export default function EditUserAccount() {
                 variant="outlined"
                 className={classes.formControl}
                 fullWidth
-                required
+                // required
               >
                 <InputLabel
                   ref={inputLabel}
@@ -299,6 +299,13 @@ export default function EditUserAccount() {
                   name="subdivision"
                   onChange={handleChange}
                   value={state.subdivision}
+                  disabled={
+                    state.division === "Topside" ||
+                    state.division === "Subsea" ||
+                    state.division === "UAV & Digital Solutions" ||
+                    state.division === "Niger Delta Regional" ||
+                    state.division === "Operations & Production"
+                  }
                 >
                   <option value="" />
                   {state.division === "Topside" ? (
@@ -382,6 +389,15 @@ export default function EditUserAccount() {
                       autoComplete: "disabled",
                       name: "code"
                     }}
+                    helperText={
+                      !code ? (
+                        <Typography variant="inherit" color="secondary">
+                          * Please Select Country Code
+                        </Typography>
+                      ) : (
+                        ""
+                      )
+                    }
                   />
                 )}
               />
@@ -414,6 +430,7 @@ export default function EditUserAccount() {
                 state.phone &&
                 state.subdivision &&
                 state.lastname &&
+                code &&
                 state.firstname &&
                 state.email &&
                 state.eid
@@ -426,6 +443,7 @@ export default function EditUserAccount() {
                   state.phone &&
                   state.subdivision &&
                   state.lastname &&
+                  code &&
                   state.firstname &&
                   state.email &&
                   state.eid

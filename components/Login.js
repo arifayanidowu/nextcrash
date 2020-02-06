@@ -13,6 +13,7 @@ import { LOGIN } from "../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { handleLogin } from "../utils/auth";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Feedback from "./Feedback";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,13 +62,18 @@ const useStyles = makeStyles(theme => ({
 
 const INIT_STATE = {
   email: "",
-  password: ""
+  password: "",
+  open: false,
+  message: "",
+  success: false
 };
 
 export default function Login() {
   const classes = useStyles();
   const [togglePassword, setTogglePassword] = useState(false);
-  const [login, { loading }] = useMutation(LOGIN);
+  const [login, { loading }] = useMutation(LOGIN, {
+    errorPolicy: "all"
+  });
   const [state, setState] = useState(INIT_STATE);
 
   const onToggle = () => {
@@ -79,6 +85,10 @@ export default function Login() {
     setState(prevState => ({ ...prevState, [e.target.id]: e.target.value }));
   };
 
+  const handleCloseFeed = () => {
+    setState(prevState => ({ ...prevState, open: false }));
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     login({
@@ -88,13 +98,43 @@ export default function Login() {
       }
     })
       .then(doc => {
+        setState(prevState => ({
+          ...prevState,
+          open: !state.open,
+          message: "You're logged in successfully!!!",
+          success: true
+        }));
         handleLogin(doc.data.login.token);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setState(prevState => ({
+          ...prevState,
+          open: !state.open,
+          message:
+            "An Unexpected error has occurred, Check your email/password.",
+          success: false
+        }));
+      });
   };
 
   return (
     <div className={classes.root}>
+      {state.success ? (
+        <Feedback
+          handleCloseFeed={handleCloseFeed}
+          open={state.open}
+          severity="success"
+          message={state.message}
+        />
+      ) : (
+        <Feedback
+          handleCloseFeed={handleCloseFeed}
+          open={state.open}
+          severity="error"
+          message={state.message}
+        />
+      )}
       <div className={classes.center}>
         <Card className={classes.card}>
           <Typography align="center" variant="h3" gutterBottom>

@@ -29,7 +29,7 @@ export default function UsersComponent() {
   const classes = useStyles();
   const router = useRouter();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { loading, error, data } = useQuery(GET_USERS, { errorPolicy: "all" });
   const [load, setLoad] = React.useState(false);
   const [search, setSearch] = React.useState("");
@@ -159,7 +159,7 @@ export default function UsersComponent() {
         </TableContainer>
 
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
           count={filteredUsers().length}
           rowsPerPage={rowsPerPage}
