@@ -4,10 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Link from "next/link";
 import { LOGIN } from "../queries";
 import { useMutation } from "@apollo/react-hooks";
@@ -60,87 +57,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const INIT_STATE = {
-  email: "",
-  password: "",
-  open: false,
-  message: "",
-  success: false
-};
-
-export default function Login() {
+export default function ForgotPass() {
   const classes = useStyles();
-  const [togglePassword, setTogglePassword] = useState(false);
-  const [login, { loading }] = useMutation(LOGIN, {
-    errorPolicy: "all"
+  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState({
+    email: ""
   });
-  const [state, setState] = useState(INIT_STATE);
-
-  const onToggle = () => {
-    setTogglePassword(!togglePassword);
-  };
 
   const handleChange = e => {
-    e.persist();
     setState(prevState => ({ ...prevState, [e.target.id]: e.target.value }));
-  };
-
-  const handleCloseFeed = () => {
-    setState(prevState => ({ ...prevState, open: false }));
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    login({
-      variables: {
-        email: state.email,
-        password: state.password
-      }
-    })
-      .then(doc => {
-        setState(prevState => ({
-          ...prevState,
-          open: !state.open,
-          message: "You're logged in successfully!!!",
-          success: true
-        }));
-        handleLogin(doc.data.login.token);
-      })
-      .catch(err => {
-        console.error(err);
-        setState(prevState => ({
-          ...prevState,
-          open: !state.open,
-          message:
-            "An Unexpected error has occurred, Check your email/password.",
-          success: false
-        }));
-      });
   };
 
   return (
     <div className={classes.root}>
-      {state.success ? (
-        <Feedback
-          handleCloseFeed={handleCloseFeed}
-          open={state.open}
-          severity="success"
-          message={state.message}
-        />
-      ) : (
-        <Feedback
-          handleCloseFeed={handleCloseFeed}
-          open={state.open}
-          severity="error"
-          message={state.message}
-        />
-      )}
       <div className={classes.center}>
         <Card className={classes.card}>
           <Typography align="center" variant="h3" gutterBottom>
-            LOGIN
+            Forgot Your Password?
           </Typography>
-          <form onSubmit={handleSubmit} className={classes.form}>
+          <Typography align="center" variant="subtitle1" gutterBottom>
+            Fill out your email address, and we’ll send you instructions to
+            reset your password.
+          </Typography>
+          <form className={classes.form}>
             <TextField
               id="email"
               type="email"
@@ -149,43 +88,16 @@ export default function Login() {
               placeholder="Email"
               fullWidth
               className={classes.textField}
+              onChange={handleChange}
               value={state.email}
-              onChange={handleChange}
             />
-            <TextField
-              id="password"
-              type={togglePassword ? "text" : "password"}
-              label="Password"
-              variant="outlined"
-              placeholder="Password"
-              fullWidth
-              onChange={handleChange}
-              className={classes.textField}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={onToggle}>
-                      {togglePassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-
             <Button
               variant="contained"
               fullWidth
               color="secondary"
               type="submit"
               size="large"
-              disabled={!(state.email && state.password) || loading}
-              style={{
-                cursor:
-                  !(state.email && state.password) || loading
-                    ? "not-allowed"
-                    : "pointer",
-                pointerEvents: "all"
-              }}
+              disabled={!state.email || loading}
             >
               {loading ? (
                 <span
@@ -199,26 +111,12 @@ export default function Login() {
                   <CircularProgress size={20} />
                 </span>
               ) : (
-                <span>Login</span>
+                <>
+                  Email me some help <ArrowForwardIcon />
+                </>
               )}
             </Button>
           </form>
-          <Grid
-            container
-            justify="space-between"
-            alignContent="flex-start"
-            style={{ marginTop: 5 }}
-          >
-            <Link href="/forgot">
-              <a className={classes.link}>Forgot Password?</a>
-            </Link>
-
-            <Link href="/vendor/register">
-              <a className={classes.link}>
-                Are you a New Vendor? click to Create an Account
-              </a>
-            </Link>
-          </Grid>
         </Card>
       </div>
     </div>

@@ -47,7 +47,11 @@ const vendorSchema = new Schema(
       type: Number
     },
     contracts: [Object],
-    isContracted: { type: Boolean, default: false }
+    isContracted: { type: Boolean, default: false },
+    isVerified: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );

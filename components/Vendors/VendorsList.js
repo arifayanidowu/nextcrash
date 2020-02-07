@@ -145,16 +145,17 @@ export default function VendorsList() {
                         {row.company_name}
                       </TableCell>
                       <TableCell align="center">
-                        {row.general_info.company_email}
+                        {(row.general_info && row.general_info.company_email) ||
+                          row.email}
                       </TableCell>
                       <TableCell align="center">
-                        {row.general_info.contact_person}
+                        {row.general_info && row.general_info.contact_person}
                       </TableCell>
                       <TableCell align="center">
-                        {row.general_info.contact_tel}
+                        {row.general_info && row.general_info.contact_tel}
                       </TableCell>
                       <TableCell align="center">
-                        {row.general_info.contact_email}
+                        {row.general_info && row.general_info.contact_email}
                       </TableCell>
 
                       <TableCell align="center">

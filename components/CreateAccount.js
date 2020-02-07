@@ -171,6 +171,7 @@ export default function CreateAccount() {
                 value={state.lastname}
                 required
                 onChange={handleChange}
+                error={!state.lastname ? true : false}
               />
             </Grid>
 
@@ -187,6 +188,7 @@ export default function CreateAccount() {
                 required
                 value={state.firstname}
                 onChange={handleChange}
+                error={!state.firstname ? true : false}
               />
             </Grid>
 
@@ -197,6 +199,7 @@ export default function CreateAccount() {
                 // margin="normal"
                 fullWidth
                 required
+                error={!state.division ? true : false}
               >
                 <InputLabel
                   ref={inputLabel}
@@ -303,6 +306,7 @@ export default function CreateAccount() {
                 required
                 value={state.email}
                 onChange={handleChange}
+                error={!state.email ? true : false}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -318,6 +322,7 @@ export default function CreateAccount() {
                 required
                 value={state.eid}
                 onChange={handleChange}
+                error={!state.eid ? true : false}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -340,6 +345,8 @@ export default function CreateAccount() {
                     fullWidth
                     required
                     variant="outlined"
+                    error={!code ? true : false}
+                    value={code}
                     inputProps={{
                       ...params.inputProps,
                       autoComplete: "disabled",
@@ -371,6 +378,7 @@ export default function CreateAccount() {
                 required
                 value={state.phone}
                 onChange={handleChange}
+                error={!state.phone ? true : false}
               />
             </Grid>
           </Grid>
@@ -384,7 +392,6 @@ export default function CreateAccount() {
               !(
                 state.division &&
                 state.phone &&
-                state.subdivision &&
                 state.lastname &&
                 state.firstname &&
                 state.email &&
@@ -397,7 +404,6 @@ export default function CreateAccount() {
                 !(
                   state.division &&
                   state.phone &&
-                  state.subdivision &&
                   state.lastname &&
                   state.firstname &&
                   state.email &&

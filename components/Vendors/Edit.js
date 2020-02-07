@@ -15,11 +15,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "../../utils/countries";
-import { EDIT_VENDOR } from "../../queries";
+import { EDIT_VENDOR, GET_VENDORS } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import axios from "axios";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
+import Feedback from "../Feedback";
 
 function countryToFlag(isoCode) {
   return typeof String.fromCodePoint !== "undefined"
@@ -126,8 +127,15 @@ export default function Edit() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [state, setState] = React.useState(INIT_STATE);
+  const [feed, setFeed] = React.useState({
+    open: false,
+    message: "",
+    success: false
+  });
   const [code, setCode] = React.useState(null);
-  const [editVendor, { loading }] = useMutation(EDIT_VENDOR);
+  const [editVendor, { loading }] = useMutation(EDIT_VENDOR, {
+    refetchQueries: [{ query: GET_VENDORS }]
+  });
   const router = useRouter();
 
   const URL = `${baseUrl}/graphql`;
@@ -202,22 +210,54 @@ export default function Edit() {
           setState(prevState => ({
             ...prevState,
             company_name: doc.data.data.vendor.company_name,
-            registration_no: doc.data.data.vendor.general_info.registration_no,
-            office_address: doc.data.data.vendor.general_info.office_address,
-            city: doc.data.data.vendor.general_info.city,
-            state: doc.data.data.vendor.general_info.state,
-            country: doc.data.data.vendor.general_info.country,
-            company_tel: doc.data.data.vendor.general_info.company_tel,
-            company_email: doc.data.data.vendor.general_info.company_email,
-            company_website: doc.data.data.vendor.general_info.company_website,
-            contact_person: doc.data.data.vendor.general_info.contact_person,
-            designation: doc.data.data.vendor.general_info.designation,
-            contact_tel: doc.data.data.vendor.general_info.contact_tel,
-            contact_email: doc.data.data.vendor.general_info.contact_email,
-            num_of_employee: doc.data.data.vendor.business_info.num_of_employee,
-            year_est: doc.data.data.vendor.business_info.year_est,
-            tax_num: doc.data.data.vendor.business_info.tax_num,
-            vat_reg_no: doc.data.data.vendor.business_info.vat_reg_no,
+            registration_no:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.registration_no,
+            office_address:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.office_address,
+            city:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.city,
+            state:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.state,
+            country:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.country,
+            company_tel:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.company_tel,
+            company_email:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.company_email,
+            company_website:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.company_website,
+            contact_person:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.contact_person,
+            designation:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.designation,
+            contact_tel:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.contact_tel,
+            contact_email:
+              doc.data.data.vendor.general_info &&
+              doc.data.data.vendor.general_info.contact_email,
+            num_of_employee:
+              doc.data.data.vendor.business_info &&
+              doc.data.data.vendor.business_info.num_of_employee,
+            year_est:
+              doc.data.data.vendor.business_info &&
+              doc.data.data.vendor.business_info.year_est,
+            tax_num:
+              doc.data.data.vendor.business_info &&
+              doc.data.data.vendor.business_info.tax_num,
+            vat_reg_no:
+              doc.data.data.vendor.business_info &&
+              doc.data.data.vendor.business_info.vat_reg_no,
             acct_name:
               doc.data.data.vendor.bank_details &&
               doc.data.data.vendor.bank_details.acct_name,
@@ -237,16 +277,22 @@ export default function Edit() {
               doc.data.data.vendor.bank_details &&
               doc.data.data.vendor.bank_details.bank_contact_phone,
             ref_company_name:
+              doc.data.data.vendor.work_reference &&
               doc.data.data.vendor.work_reference.ref_company_name,
             ref_company_address:
+              doc.data.data.vendor.work_reference &&
               doc.data.data.vendor.work_reference.ref_company_address,
             ref_contact_person:
+              doc.data.data.vendor.work_reference &&
               doc.data.data.vendor.work_reference.ref_contact_person,
             ref_contact_designation:
+              doc.data.data.vendor.work_reference &&
               doc.data.data.vendor.work_reference.ref_contact_designation,
             ref_contact_email:
+              doc.data.data.vendor.work_reference &&
               doc.data.data.vendor.work_reference.ref_contact_email,
             ref_contact_phone:
+              doc.data.data.vendor.work_reference &&
               doc.data.data.vendor.work_reference.ref_contact_phone,
             individual_name:
               doc.data.data.vendor.individual_reference &&
@@ -344,9 +390,19 @@ export default function Edit() {
       }
     })
       .then(doc => {
-        console.log(doc);
+        setFeed(prevState => ({
+          ...prevState,
+          open: !feed.open,
+          message: "Vendor Details updated successfully!!!",
+          success: true
+        }));
+        router.push("/vendor");
       })
       .catch(err => console.error(err));
+  };
+
+  const handleCloseFeed = () => {
+    setFeed(prevState => ({ ...prevState, open: false }));
   };
 
   const isDisabled = !(
@@ -387,6 +443,12 @@ export default function Edit() {
 
   return (
     <div>
+      <Feedback
+        handleCloseFeed={handleCloseFeed}
+        open={feed.open}
+        severity="success"
+        message={feed.message}
+      />
       <div className={classes.center}>
         <Card className={classes.card}>
           <Typography align="center" variant="h5" gutterBottom>

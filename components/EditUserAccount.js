@@ -16,12 +16,13 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { countries } from "../utils/countries";
 import { divisions, subdivisions } from "../utils/divisions";
-import { EDIT_USER, GET_USERS } from "../queries";
+import { EDIT_USER, GET_USERS, AUTH_USER } from "../queries";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Loader from "./Loader";
 import baseUrl from "../utils/baseUrl";
+import Feedback from "./Feedback";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -84,10 +85,18 @@ export default function EditUserAccount() {
   const [code, setCode] = useState(null);
   const [state, setState] = useState(INIT_STATE);
   const [loading, setLoading] = useState(false);
+  const [feed, setFeed] = useState({
+    open: false,
+    message: "",
+    success: false
+  });
   const [editUser] = useMutation(EDIT_USER, {
     refetchQueries: [
       {
         query: GET_USERS
+      },
+      {
+        query: AUTH_USER
       }
     ]
   });
@@ -146,7 +155,7 @@ export default function EditUserAccount() {
     getOptionLabel: option => option.phone,
     renderOption: option => (
       <React.Fragment>
-        <span>{countryToFlag(option.code)}</span>
+        {/* <span>{countryToFlag(option.code)}</span> */}
         {option.label} ({option.code}) +{option.phone}
       </React.Fragment>
     )
@@ -182,6 +191,12 @@ export default function EditUserAccount() {
         // setCode(null);
         setLoading(false);
         console.log(doc);
+        setFeed(prevState => ({
+          ...prevState,
+          open: !feed.open,
+          message: "User Details updated successfully!!!",
+          success: true
+        }));
         setTimeout(() => {
           router.push("/users");
         }, 1000);
@@ -192,8 +207,18 @@ export default function EditUserAccount() {
       });
   };
 
+  const handleCloseFeed = () => {
+    setFeed(prevState => ({ ...prevState, open: false }));
+  };
+
   return (
     <div>
+      <Feedback
+        handleCloseFeed={handleCloseFeed}
+        open={feed.open}
+        severity="success"
+        message={feed.message}
+      />
       <Typography align="center" variant="h5" component="h1" gutterBottom>
         Edit User Account
       </Typography>
@@ -389,6 +414,7 @@ export default function EditUserAccount() {
                       autoComplete: "disabled",
                       name: "code"
                     }}
+                    error={!code ? true : false}
                     helperText={
                       !code ? (
                         <Typography variant="inherit" color="secondary">
