@@ -31,6 +31,21 @@ export const GET_USER = gql`
   }
 `;
 
+export const DELETE_USER = gql`
+  mutation DeleteUser($id: ID) {
+    deleteUser(id: $id) {
+      id
+      email
+      firstname
+      lastname
+      eid
+      division
+      subdivision
+      phone
+    }
+  }
+`;
+
 export const AUTH_USER = gql`
   {
     authUser {

@@ -73,7 +73,7 @@ const INIT_STATE = {
   phone: ""
 };
 
-export default function CreateAccount() {
+export default function CreateAccount({ user }) {
   const classes = useStyles();
   const inputLabel = useRef(null);
   const [labelWidth, setLabelWidth] = useState(0);
@@ -85,7 +85,10 @@ export default function CreateAccount() {
       {
         query: GET_USERS
       }
-    ]
+    ],
+    variables: {
+      id: user.authUser.id
+    }
   });
   const router = useRouter();
 

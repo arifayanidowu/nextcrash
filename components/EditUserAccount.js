@@ -454,7 +454,6 @@ export default function EditUserAccount() {
               !(
                 state.division &&
                 state.phone &&
-                state.subdivision &&
                 state.lastname &&
                 code &&
                 state.firstname &&
@@ -467,7 +466,6 @@ export default function EditUserAccount() {
                 !(
                   state.division &&
                   state.phone &&
-                  state.subdivision &&
                   state.lastname &&
                   code &&
                   state.firstname &&

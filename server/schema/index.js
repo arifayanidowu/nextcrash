@@ -176,6 +176,8 @@ const typeDefs = gql`
       eid: String!
     ): User
 
+    deleteUser(id: ID): User
+
     vendorReg(company_name: String, email: String, password: String): VendorReg
 
     editVendor(
@@ -214,6 +216,8 @@ const typeDefs = gql`
       individual_email: String
       individual_phone: String
     ): Vendor
+
+    deleteVendor(id: ID): Vendor
 
     addVendor(
       company_name: String
@@ -257,7 +261,10 @@ const resolvers = {
   Query: {
     users: async (_, {}, { User }) => {
       try {
-        const users = await User.find({});
+        const users = await User.find({}).sort({
+          createdAt: "desc"
+        });
+
         return users;
       } catch (error) {
         throw new ApolloError(error);
@@ -282,7 +289,7 @@ const resolvers = {
     },
     vendors: async (_, {}, { Vendor }) => {
       try {
-        const vendors = await Vendor.find({});
+        const vendors = await Vendor.find({}).sort({ createdAt: "desc" });
         return vendors;
       } catch (error) {
         throw new ApolloError(error);
@@ -370,6 +377,14 @@ const resolvers = {
           { new: true }
         );
         return user;
+      } catch (error) {
+        throw new ApolloError(error);
+      }
+    },
+    deleteUser: async (_, { id }, { User }) => {
+      try {
+        const deletedUser = await User.findOneAndDelete({ _id: id });
+        return deletedUser;
       } catch (error) {
         throw new ApolloError(error);
       }
