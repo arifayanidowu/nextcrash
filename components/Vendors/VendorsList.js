@@ -136,41 +136,55 @@ export default function VendorsList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredVendors()
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(row => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      <TableCell component="th" scope="row" align="center">
-                        {row.company_name}
-                      </TableCell>
-                      <TableCell align="center">
-                        {(row.general_info && row.general_info.company_email) ||
-                          row.email}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.general_info && row.general_info.contact_person}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.general_info && row.general_info.contact_tel}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.general_info && row.general_info.contact_email}
-                      </TableCell>
+              {filteredVendors().length ? (
+                filteredVendors()
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(row => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.id}
+                      >
+                        <TableCell component="th" scope="row" align="center">
+                          {row.company_name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {(row.general_info &&
+                            row.general_info.company_email) ||
+                            row.email}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.general_info && row.general_info.contact_person}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.general_info && row.general_info.contact_tel}
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.general_info && row.general_info.contact_email}
+                        </TableCell>
 
-                      <TableCell align="center">
-                        <IconButton
-                          color="primary"
-                          onClick={() =>
-                            router.push(`/vendor/edit?id=${row.id}`)
-                          }
-                        >
-                          <EditIcon color="primary" />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                        <TableCell align="center">
+                          <IconButton
+                            color="primary"
+                            onClick={() =>
+                              router.push(`/vendor/edit?id=${row.id}`)
+                            }
+                          >
+                            <EditIcon color="primary" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan="7" align="center" valign="middle">
+                    No Match Found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

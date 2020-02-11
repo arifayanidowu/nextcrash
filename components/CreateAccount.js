@@ -19,6 +19,7 @@ import { divisions, subdivisions } from "../utils/divisions";
 import { CREATE_USER, GET_USERS } from "../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
+import Feedback from "./Feedback";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -70,7 +71,10 @@ const INIT_STATE = {
   eid: "",
   division: "",
   subdivision: "",
-  phone: ""
+  phone: "",
+  open: false,
+  message: "",
+  success: false
 };
 
 export default function CreateAccount({ user }) {
@@ -79,7 +83,7 @@ export default function CreateAccount({ user }) {
   const [labelWidth, setLabelWidth] = useState(0);
   const [code, setCode] = useState(null);
   const [state, setState] = useState(INIT_STATE);
-  const [age, setAge] = useState("");
+
   const [addUser] = useMutation(CREATE_USER, {
     refetchQueries: [
       {
@@ -114,9 +118,8 @@ export default function CreateAccount({ user }) {
     setState(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   };
 
-  const handleAge = e => {
-    e.persist();
-    setAge(e.target.value);
+  const handleCloseFeed = () => {
+    setState(prevState => ({ ...prevState, open: false }));
   };
 
   const handleSubmit = e => {
@@ -139,7 +142,12 @@ export default function CreateAccount({ user }) {
       }
     })
       .then(doc => {
-        setState(INIT_STATE);
+        setState(prevState => ({
+          ...prevState,
+          open: !state.open,
+          message: "New User Account Created Successfully!!!",
+          success: true
+        }));
         setCode(null);
         setLoading(false);
         setTimeout(() => {
@@ -149,11 +157,32 @@ export default function CreateAccount({ user }) {
       .catch(err => {
         console.error(err);
         setLoading(false);
+        setState(prevState => ({
+          ...prevState,
+          open: !state.open,
+          message: "An Unexpected error has occurred, Check the .",
+          success: false
+        }));
       });
   };
 
   return (
     <div>
+      {state.success ? (
+        <Feedback
+          handleCloseFeed={handleCloseFeed}
+          open={state.open}
+          severity="success"
+          message={state.message}
+        />
+      ) : (
+        <Feedback
+          handleCloseFeed={handleCloseFeed}
+          open={state.open}
+          severity="error"
+          message={state.message}
+        />
+      )}
       <Typography align="center" variant="h5" component="h1" gutterBottom>
         Create User Account
       </Typography>

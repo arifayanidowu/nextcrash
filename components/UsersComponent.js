@@ -112,9 +112,9 @@ export default function UsersComponent({ user }) {
       if (userData.id === user.authUser.id) {
         return null;
       } else if (search !== "") {
-        return userData.firstname
-          .toLowerCase()
-          .indexOf(search.toLowerCase()) !== -1 ||
+        return (
+          userData.firstname.toLowerCase().indexOf(search.toLowerCase()) !==
+            -1 ||
           userData.lastname.toLowerCase().indexOf(search.toLowerCase()) !==
             -1 ||
           userData.email.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
@@ -122,10 +122,8 @@ export default function UsersComponent({ user }) {
             -1 ||
           userData.subdivision.toLowerCase().indexOf(search.toLowerCase()) !==
             -1 ||
-          userData.eid.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          userData.subdivision === ""
-          ? "Nil".toLowerCase().indexOf(search.toLowerCase()) !== -1
-          : "";
+          userData.eid.toLowerCase().indexOf(search.toLowerCase()) !== -1
+        );
       } else {
         return user;
       }
@@ -216,41 +214,54 @@ export default function UsersComponent({ user }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers()
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(row => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      <TableCell component="th" scope="row" align="center">
-                        {row.firstname}
-                      </TableCell>
-                      <TableCell align="center">{row.lastname}</TableCell>
-                      <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.eid}</TableCell>
-                      <TableCell align="center">{row.division}</TableCell>
+              {filteredUsers().length ? (
+                filteredUsers()
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(row => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.id}
+                      >
+                        <TableCell component="th" scope="row" align="center">
+                          {row.firstname}
+                        </TableCell>
+                        <TableCell align="center">{row.lastname}</TableCell>
+                        <TableCell align="center">{row.email}</TableCell>
+                        <TableCell align="center">{row.eid}</TableCell>
+                        <TableCell align="center">{row.division}</TableCell>
 
-                      <TableCell align="center">
-                        {row.subdivision ? row.subdivision : "Nil"}
-                      </TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          color="primary"
-                          onClick={() =>
-                            router.push(`/users/edit?id=${row.id}`)
-                          }
-                        >
-                          <EditIcon color="primary" />
-                        </IconButton>
-                        <IconButton
-                          color="secondary"
-                          onClick={() => handleClickOpenAction(row.id)}
-                        >
-                          <DeleteIcon color="secondary" />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                        <TableCell align="center">
+                          {row.subdivision ? row.subdivision : "Nil"}
+                        </TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            color="primary"
+                            onClick={() =>
+                              router.push(`/users/edit?id=${row.id}`)
+                            }
+                          >
+                            <EditIcon color="primary" />
+                          </IconButton>
+                          <IconButton
+                            color="secondary"
+                            onClick={() => handleClickOpenAction(row.id)}
+                          >
+                            <DeleteIcon color="secondary" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan="7" align="center" valign="middle">
+                    No Match Found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
