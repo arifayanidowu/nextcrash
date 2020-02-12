@@ -28,6 +28,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useMutation } from "@apollo/react-hooks";
 import { VENDOR_REG } from "../queries";
+import Feedback from "./Feedback";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,7 +82,10 @@ const useStyles = makeStyles(theme => ({
 const INIT_STATE = {
   email: "",
   password: "",
-  company_name: ""
+  company_name: "",
+  open: false,
+  message: "",
+  success: false
 };
 
 export default function VendorRegister() {
@@ -114,6 +118,10 @@ export default function VendorRegister() {
     terms
   );
 
+  const handleCloseFeed = () => {
+    setValue(prevState => ({ ...prevState, open: false }));
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     vendorReg({
@@ -125,15 +133,47 @@ export default function VendorRegister() {
     })
       .then(doc => {
         setValue(INIT_STATE);
+        setValue(prevState => ({
+          ...prevState,
+          open: !value.open,
+          message:
+            "Your Account has been registered, Please kindly visit the link sent to your email to verify your account.",
+          success: true
+        }));
         setTerms(false);
 
         console.log(doc.data);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setValue(INIT_STATE);
+        setValue(prevState => ({
+          ...prevState,
+          open: !value.open,
+          message:
+            "An Unexpected error has occurred, Please kindly check your details and try again.",
+          success: false
+        }));
+      });
   };
 
   return (
     <div className={classes.root}>
+      {value.success ? (
+        <Feedback
+          handleCloseFeed={handleCloseFeed}
+          open={value.open}
+          severity="success"
+          message={value.message}
+        />
+      ) : (
+        <Feedback
+          handleCloseFeed={handleCloseFeed}
+          open={value.open}
+          severity="error"
+          message={value.message}
+        />
+      )}
       <div className={classes.center}>
         <Card className={classes.card} elevation={5}>
           <CardHeader
@@ -212,7 +252,7 @@ export default function VendorRegister() {
                   color="secondary"
                   className={classes.message}
                 >
-                  * Please kindly follow the steps above, religiously.
+                  * Please kindly follow the steps listed above.
                 </Typography>
               </div>
             </Grid>
@@ -276,7 +316,7 @@ export default function VendorRegister() {
                     }
                     label={
                       <span style={{ fontFamily: "Rubik" }}>
-                        I agree to RS EDGE's{" "}
+                        I agree to RusselSmith's{" "}
                         <Link href="/terms">
                           <a style={{ color: theme.palette.secondary.light }}>
                             Terms of Use
