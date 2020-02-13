@@ -72,16 +72,16 @@ export default function Terms() {
           <p>
             The following terminology applies to these Terms and Conditions,
             Privacy Statement and Disclaimer Notice and all Agreements:
-            "Client", "You" and "Your" refers to you, the person log on this
-            website and compliant to the Company’s terms and conditions. "The
-            Company", "Ourselves", "We", "Our" and "Us", refers to our Company.
-            "Party", "Parties", or "Us", refers to both the Client and
-            ourselves. All terms refer to the offer, acceptance and
-            consideration of payment necessary to undertake the process of our
-            assistance to the Client in the most appropriate manner for the
+            "Client", "You" and "Your" refers to you, the person logging on to
+            this website and compliant to the Company’s terms and conditions.
+            "The Company", "Ourselves", "We", "Our" and "Us", refers to our
+            Company (RusselSmith). "Party", "Parties", or "Us", refers to both
+            the Client and ourselves. All terms refer to the offer, acceptance
+            and consideration of payment necessary to undertake the process of
+            our assistance to the Client in the most appropriate manner for the
             express purpose of meeting the Client’s needs in respect of
             provision of the Company’s stated services, in accordance with and
-            subject to, prevailing law of Netherlands. Any use of the above
+            subject to, prevailing law of Nigeria. Any use of the above
             terminology or other words in the singular, plural, capitalization
             and/or he/she or they, are taken as interchangeable and therefore as
             referring to same.
@@ -141,8 +141,8 @@ export default function Terms() {
           </p>
 
           <p>
-            Russelsmith reserves the right to monitor all Comments and to remove
-            any Comments which can be considered inappropriate, offensive or
+            RusselSmith reserves the right to monitor all Comments and to remove
+            any Comments which we adjudge to be inappropriate, offensive or
             causes breach of these Terms and Conditions.
           </p>
 
@@ -265,8 +265,9 @@ export default function Terms() {
           </ul>
 
           <p>
-            No use of Russelsmith's logo or other artwork will be allowed for
-            linking absent a trademark license agreement.
+            No use of RusselSmith's logo or other artwork will be allowed for
+            use by a third-party organization, as it's protected by a trademark
+            license agreement.
           </p>
 
           <h3>

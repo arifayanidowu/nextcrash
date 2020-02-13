@@ -193,6 +193,13 @@ export default function CookiePolicy() {
             with specific web browsers, it can be found at the browsers'
             respective websites. What Are Cookies?
           </p>
+          <p>
+            A computer “cookie” is more formally known as an HTTP cookie, a web
+            cookie, an Internet cookie or a browser cookie. The name is a
+            shorter version of “magic cookie,” which is a term for a packet of
+            data that a computer receives and then sends back without changing
+            or altering it.
+          </p>
 
           <h2>Children's Information</h2>
 
