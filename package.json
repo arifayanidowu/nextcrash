@@ -30,7 +30,7 @@
     "apollo-link-context": "^1.0.19",
     "apollo-link-http": "^1.5.16",
     "apollo-link-schema": "^1.2.4",
-    "apollo-server-express": "^2.9.16",
+    "apollo-server-express": "^2.14.2",
     "axios": "^0.19.1",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.0.4",
