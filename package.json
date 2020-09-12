@@ -46,7 +46,7 @@
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.7",
     "next": "9.1.7",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nookies": "^2.0.8",
     "perfect-scrollbar": "^1.4.0",
     "react": "16.12.0",
